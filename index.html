@@ -719,13 +719,13 @@
         let temporizadorToques = null;
         let configEstetica = JSON.parse(localStorage.getItem('estetica_computercell')) || {
             nombreTienda: "Computer Cell",
-            whatsapp: "50400000000",
+            whatsapp: "50495324898",
             colorPrimario: "#7C4DFF",
             colorFondo: "#12101f",
             colorTarjeta: "#1a172e",
             colorPrecio: "#bca0ff"
         };
-        let listaMayoristas = JSON.parse(localStorage.getItem('mayoristas_computercell')) || ["+50499999999", "99999999"];
+        let listaMayoristas = JSON.parse(localStorage.getItem('mayoristas_computercell')) || ["+50495324898", "95324898"];
         const productosPorDefecto = [
             { nombre: "Cargador Rápido 20W", categoria: "Cargadores", detalle: "L 350.00", mayoreo: "L 220.00", imagen: "https://via.placeholder.com/300x300/311B92/FFFFFF?text=Cargador+20W" },
             { nombre: "Audífonos Bluetooth Pro", categoria: "Audio", detalle: "L 650.00", mayoreo: "L 430.00", imagen: "https://via.placeholder.com/300x300/311B92/FFFFFF?text=Audifonos+Pro" },
@@ -892,7 +892,7 @@
                 hayProductos = true;
                 const precioMostrar = (modoActual === 'mayoreo') ? prod.mayoreo : prod.detalle;
                 const tipoTexto = (modoActual === 'mayoreo') ? 'Mayoreo' : 'Detalle';
-                const wspNumero = configEstetica.whatsapp || "50400000000";
+                const wspNumero = configEstetica.whatsapp || "50495324898";
                 const mensajeWsp = encodeURIComponent(`Hola ${configEstetica.nombreTienda}, estoy interesado/a en comprar el producto: *${prod.nombre}* a precio de *${tipoTexto}* (${precioMostrar}). ¿Está disponible?`);
                 const enlaceWsp = `https://wa.me/${wspNumero}?text=${mensajeWsp}`;
                 let botonesAdmin = "";
@@ -996,7 +996,7 @@
         };
         window.abrirModalEstetica = function() {
             document.getElementById('est-nombre-tienda').value = configEstetica.nombreTienda || "Computer Cell";
-            document.getElementById('est-whatsapp').value = configEstetica.whatsapp || "50400000000";
+            document.getElementById('est-whatsapp').value = configEstetica.whatsapp || "50495324898";
             document.getElementById('est-color-primario').value = configEstetica.colorPrimario || "#7C4DFF";
             document.getElementById('est-color-fondo').value = configEstetica.colorFondo || "#12101f";
             document.getElementById('est-color-tarjeta').value = configEstetica.colorTarjeta || "#1a172e";
