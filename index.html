@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Cell - Catálogo</title>
+    <style>
+        :root {
+            --color-fondo: #12101f;
+            --color-tarjeta: #1a172e;
+            --color-primario: #7C4DFF;
+            --color-secundario: #4527A0;
+            --color-texto: #FFFFFF;
+            --color-precio: #bca0ff;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            background-color: var(--color-fondo);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--color-texto);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        #pantalla-inicio {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .marca-esquina {
+            position: fixed;
+            top: 18px;
+            left: 22px;
+            color: var(--color-texto);
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            z-index: 30;
+            cursor: pointer;
+            user-select: none;
+        }
+        .badge-admin-activo {
+            display: none;
+            background: #FF3D00;
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .button-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            width: 100%;
+            max-width: 320px;
+        }
+        .btn-centro {
+            width: 100%;
+            background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+            color: #ffffff;
+            border: none;
+            padding: 15px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn-centro:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+        .btn-secundario {
+            width: 100%;
+            background: var(--color-tarjeta);
+            color: var(--color-precio);
+            border: 2px solid var(--color-primario);
+            padding: 13px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-secundario:hover {
+            background: var(--color-primario);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+        #vista-catalogo {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            min-height: 100vh;
+            padding-top: 75px;
+            padding-bottom: 40px;
+        }
+        .barra-superior {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: rgba(18, 16, 31, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            z-index: 20;
+        }
+        .etiqueta-modo {
+            background: var(--color-primario);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .btn-barra {
+            background: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+            border: 1px solid var(--color-primario);
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-barra:hover {
+            background: var(--color-primario);
+        }
+        .btn-agregar-admin {
+            display: none;
+            background: #00C853;
+            color: #FFFFFF;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-estetica-admin {
+            display: none;
+            background: #FF9100;
+            color: #FFFFFF;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .barra-categorias {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 6px 0 18px 0;
+            margin-bottom: 10px;
+            scrollbar-width: none;
+        }
+        .barra-categorias::-webkit-scrollbar {
+            display: none;
+        }
+        .btn-categoria {
+            background: var(--color-tarjeta);
+            color: #d1c4e9;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .btn-categoria:hover {
+            border-color: var(--color-primario);
+            color: #FFFFFF;
+        }
+        .btn-categoria.activa {
+            background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+            color: #FFFFFF;
+            border-color: var(--color-primario);
+        }
+        .contenedor-catalogo {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 16px;
+        }
+        @media (min-width: 768px) {
+            .productos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 22px;
+            }
+        }
+        .card-producto {
+            position: relative;
+            background: var(--color-tarjeta);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .card-producto:hover {
+            transform: translateY(-4px);
+            border-color: var(--color-primario);
+        }
+        .etiqueta-cat-tarjeta {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(18, 16, 31, 0.82);
+            backdrop-filter: blur(4px);
+            color: var(--color-precio);
+            border: 1px solid var(--color-primario);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 10px;
+            z-index: 4;
+        }
+        .foto-contenedor {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .foto-contenedor img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .foto-contenedor img:hover {
+            transform: scale(1.05);
+        }
+        .info-producto {
+            padding: 14px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .info-producto h4 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-texto);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .precio {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--color-precio);
+        }
+        .btn-whatsapp {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            background: #25D366;
+            color: #FFFFFF;
+            border: none;
+            padding: 9px 10px;
+            border-radius: 9px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s ease;
+            margin-top: 4px;
+        }
+        .btn-whatsapp:hover {
+            background: #1EBE5D;
+        }
+        .admin-botones-tarjeta {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 6px;
+            z-index: 5;
+        }
+        .btn-editar-prod, .btn-eliminar-prod {
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+        .btn-editar-prod { background: var(--color-primario); }
+        .btn-eliminar-prod { background: #FF1744; }
+        #modal-zoom {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 9, 20, 0.94);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 20px;
+        }
+        .zoom-caja {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+        }
+        .zoom-caja img {
+            width: 100%;
+            height: auto;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 14px;
+            border: 2px solid var(--color-primario);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            display: block;
+        }
+        .btn-cerrar-zoom {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: #FF1744;
+            color: #FFFFFF;
+            border: 2px solid #FFFFFF;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-fondo {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 9, 20, 0.85);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            padding: 20px;
+        }
+        .modal-caja {
+            background: var(--color-tarjeta);
+            border: 2px solid var(--color-primario);
+            border-radius: 18px;
+            padding: 26px;
+            width: 100%;
+            max-width: 390px;
+            color: #FFFFFF;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-caja h3 {
+            margin-bottom: 12px;
+            color: #FFFFFF;
+        }
+        .modal-caja p {
+            font-size: 0.9rem;
+            color: #d1c4e9;
+            margin-bottom: 18px;
+            line-height: 1.4;
+        }
+        .input-campo {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--color-primario);
+            background: var(--color-fondo);
+            color: #FFFFFF;
+            font-size: 1rem;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+        .fila-color {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .fila-color label {
+            font-size: 0.9rem;
+            color: #e0d7ff;
+            font-weight: 500;
+        }
+        .fila-color input[type="color"] {
+            width: 44px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: transparent;
+        }
+        .input-archivo-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .input-archivo-container label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--color-precio);
+            margin-bottom: 6px;
+        }
+        .input-archivo {
+            width: 100%;
+            padding: 8px;
+            background: var(--color-fondo);
+            border: 1px solid var(--color-primario);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+        .modal-acciones {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .modal-acciones button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-confirmar {
+            background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+            color: #FFFFFF;
+        }
+        .btn-cancelar {
+            background: rgba(255, 255, 255, 0.12);
+            color: #FFFFFF;
+        }
+        .mensaje-vacio {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--color-precio);
+            font-size: 1rem;
+        }
+        .estado-nube {
+            font-size: 0.72rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background: rgba(0, 200, 83, 0.2);
+            color: #69f0ae;
+            border: 1px solid #00c853;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="marca-esquina" onclick="detectarToqueSecreto()">
+        <span id="nombre-tienda-titulo"><strong>Computer Cell</strong></span>
+        <span id="indicador-admin" class="badge-admin-activo">MODO ADMIN</span>
+    </div>
+    <div id="pantalla-inicio">
+        <div class="button-wrapper">
+            <button class="btn-centro" onclick="abrirCatalogo('detalle')">💼 Explorar Catálogo</button>
+            <button class="btn-secundario" onclick="abrirModalMayorista()">🔐 Acceso Mayorista</button>
+            <button id="btn-cerrar-sesion-admin" class="btn-secundario" style="display:none; border-color:#FF3D00; color:#FF3D00;" onclick="cerrarSesionAdmin()">🚪 Salir de Modo Admin</button>
+        </div>
+    </div>
+    <div id="vista-catalogo">
+        <div class="barra-superior">
+            <span id="indicador-nube" class="estado-nube">☁️ En vivo (Firebase)</span>
+            <span id="badge-tipo" class="etiqueta-modo">Precios al Detalle</span>
+            <button id="btn-estetica" class="btn-estetica-admin" onclick="abrirModalEstetica()">🎨 Estética</button>
+            <button id="btn-nuevo-producto" class="btn-agregar-admin" onclick="abrirModalNuevoProducto()">➕ Agregar</button>
+            <button class="btn-barra" onclick="volverInicio()">⬅ Inicio</button>
+        </div>
+        <div class="contenedor-catalogo">
+            <div class="barra-categorias" id="barra-categorias"></div>
+            <div class="productos-grid" id="lista-productos"></div>
+        </div>
+    </div>
+    <div id="modal-zoom" onclick="cerrarZoom()">
+        <div class="zoom-caja" onclick="event.stopPropagation()">
+            <button class="btn-cerrar-zoom" onclick="cerrarZoom()">✕</button>
+            <img id="img-ampliada" src="" alt="Imagen ampliada">
+        </div>
+    </div>
+    <div id="modal-mayorista" class="modal-fondo">
+        <div class="modal-caja">
+            <h3>🔐 Acceso Mayorista</h3>
+            <div id="paso-telefono">
+                <p>Ingresa tu número telefónico. Al hacer clic en enviar, se abrirá tu WhatsApp para enviarte el código de verificación automáticamente.</p>
+                <input type="tel" id="input-telefono" class="input-campo" placeholder="Ej: +504 9999-9999">
+                <div class="modal-acciones">
+                    <button class="btn-cancelar" onclick="cerrarModal('modal-mayorista')">Cancelar</button>
+                    <button class="btn-confirmar" onclick="enviarCodigoWhatsApp()">Enviar por WhatsApp</button>
+                </div>
+            </div>
+            <div id="paso-codigo" style="display: none;">
+                <p>Te hemos enviado el código por WhatsApp. Ingrésalo abajo para acceder:</p>
+                <input type="text" id="input-codigo" class="input-campo" placeholder="Ingresa tu código">
+                <div class="modal-acciones">
+                    <button class="btn-cancelar" onclick="cerrarModal('modal-mayorista')">Cancelar</button>
+                    <button class="btn-confirmar" onclick="verificarCodigo()">Acceder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-login-admin" class="modal-fondo">
+        <div class="modal-caja">
+            <h3>🛡️ Panel Autorizado</h3>
+            <p>Solo correos autorizados pueden editar el catálogo.</p>
+            <input type="email" id="admin-email" class="input-campo" placeholder="Correo autorizado">
+            <input type="password" id="admin-pass" class="input-campo" placeholder="Contraseña">
+            <div class="modal-acciones">
+                <button class="btn-cancelar" onclick="cerrarModal('modal-login-admin')">Cancelar</button>
+                <button class="btn-confirmar" onclick="verificarAdmin()">Entrar</button>
+            </div>
+        </div>
+    </div>
+    <div id="modal-estetica" class="modal-fondo">
+        <div class="modal-caja">
+            <h3>🎨 Personalizar Estética</h3>
+            <p>Los cambios se sincronizarán en todos los dispositivos.</p>
+            <input type="text" id="est-nombre-tienda" class="input-campo" placeholder="Nombre de la tienda">
+            <input type="text" id="est-whatsapp" class="input-campo" placeholder="WhatsApp tienda (Ej: 50495324898)">
+            <div class="fila-color">
+                <label for="est-color-primario">Color Principal (Botones):</label>
+                <input type="color" id="est-color-primario" value="#7C4DFF" oninput="previsualizarEstetica()">
+            </div>
+            <div class="fila-color">
+                <label for="est-color-fondo">Color de Fondo:</label>
+                <input type="color" id="est-color-fondo" value="#12101f" oninput="previsualizarEstetica()">
+            </div>
+            <div class="fila-color">
+                <label for="est-color-tarjeta">Color de Tarjetas:</label>
+                <input type="color" id="est-color-tarjeta" value="#1a172e" oninput="previsualizarEstetica()">
+            </div>
+            <div class="fila-color">
+                <label for="est-color-precio">Color de Precios:</label>
+                <input type="color" id="est-color-precio" value="#bca0ff" oninput="previsualizarEstetica()">
+            </div>
+            <div class="modal-acciones">
+                <button class="btn-cancelar" onclick="restaurarEsteticaDefecto()">Restaurar</button>
+                <button class="btn-confirmar" onclick="guardarEstetica()">Guardar</button>
+            </div>
+            <div class="modal-acciones" style="margin-top:8px;">
+                <button class="btn-cancelar" onclick="cerrarModal('modal-estetica')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    <div id="modal-nuevo-prod" class="modal-fondo">
+        <div class="modal-caja">
+            <h3 id="titulo-modal-prod">➕ Nuevo Producto</h3>
+            <input type="hidden" id="prod-id-firebase">
+            <input type="hidden" id="prod-indice">
+            <input type="text" id="prod-nombre" class="input-campo" placeholder="Nombre del producto">
+            <select id="prod-categoria" class="input-campo">
+                <option value="Cargadores">Cargadores</option>
+                <option value="Audio">Audio</option>
+                <option value="Cables">Cables</option>
+                <option value="Protección">Protección</option>
+                <option value="Accesorios">Accesorios</option>
+            </select>
+            <input type="text" id="prod-detalle" class="input-campo" placeholder="Precio Detalle (Ej: L 350.00)">
+            <input type="text" id="prod-mayoreo" class="input-campo" placeholder="Precio Mayoreo (Ej: L 220.00)">
+            <div class="input-archivo-container">
+                <label for="prod-archivo">Seleccionar imagen del dispositivo:</label>
+                <input type="file" id="prod-archivo" class="input-archivo" accept="image/*">
+            </div>
+            <div class="modal-acciones">
+                <button class="btn-cancelar" onclick="cerrarModal('modal-nuevo-prod')">Cancelar</button>
+                <button class="btn-confirmar" onclick="guardarProducto()">Guardar</button>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyBvLDDsuP0O9VUQWWgg5tVvifPndJZCPgw",
+            authDomain: "computer-cell-catalogo-digital.firebaseapp.com",
+            databaseURL: "https://computer-cell-catalogo-digital-default-rtdb.firebaseio.com",
+            projectId: "computer-cell-catalogo-digital",
+            storageBucket: "computer-cell-catalogo-digital.firebasestorage.app",
+            messagingSenderId: "949434228771",
+            appId: "1:949434228771:web:75ac8a92cace30c5cf1196",
+            measurementId: "G-5G64BW2C54"
+        };
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        const CORREOS_AUTORIZADOS = [
+            "lisbethmeji2011@gmail.com",
+            "zelayaeuceda@gmail.com"
+        ];
+        const CLAVE_ADMIN = "ComputerCell2016";
+        const CODIGOS_MAYORISTA_DISPONIBLES = [
+            "2026", "7788", "4590", "1234", "9988", 
+            "5544", "3322", "8899", "6677", "1100"
+        ];
+        let codigoMayoristaActivo = "";
+        const CATEGORIAS = ["Todas", "Cargadores", "Audio", "Cables", "Protección", "Accesorios"];
+        let categoriaActiva = "Todas";
+        let esAdmin = false;
+        let modoActual = 'detalle';
+        let contadorToques = 0;
+        let temporizadorToques = null;
+        let configEstetica = JSON.parse(localStorage.getItem('estetica_computercell')) || {
+            nombreTienda: "Computer Cell",
+            whatsapp: "50495324898",
+            colorPrimario: "#7C4DFF",
+            colorFondo: "#12101f",
+            colorTarjeta: "#1a172e",
+            colorPrecio: "#bca0ff"
+        };
+        const productosPorDefecto = [
+            { nombre: "Cargador Rápido 20W", categoria: "Cargadores", detalle: "L 350.00", mayoreo: "L 220.00", imagen: "https://via.placeholder.com/300x300/311B92/FFFFFF?text=Cargador+20W" },
+            { nombre: "Audífonos Bluetooth Pro", categoria: "Audio", detalle: "L 650.00", mayoreo: "L 430.00", imagen: "https://via.placeholder.com/300x300/311B92/FFFFFF?text=Audifonos+Pro" },
+            { nombre: "Cable USB-C Reforzado", categoria: "Cables", detalle: "L 180.00", mayoreo: "L 95.00", imagen: "https://via.placeholder.com/300x300/311B92/FFFFFF?text=Cable+USB-C" },
+            { nombre: "Protector Pantalla Vidrio", categoria: "Protección", detalle: "L 150.00", mayoreo: "L 65.00", imagen: "https://via.placeholder.com/300x300/311B92/FFFFFF?text=Vidrio+Templado" }
+        ];
+        let productos = JSON.parse(localStorage.getItem('productos_computercell')) || productosPorDefecto;
+        aplicarEsteticaVisual(configEstetica);
+        onSnapshot(collection(db, "productos"), (snapshot) => {
+            const listaNube = [];
+            snapshot.forEach((docSnap) => {
+                listaNube.push({ idFirebase: docSnap.id, ...docSnap.data() });
+            });
+            if (listaNube.length > 0) {
+                productos = listaNube;
+                localStorage.setItem('productos_computercell', JSON.stringify(productos));
+                if (document.getElementById('vista-catalogo').style.display === 'flex') {
+                    renderizarProductos();
+                }
+            }
+        });
+        onSnapshot(doc(db, "configuracion", "estetica"), (docSnap) => {
+            if (docSnap.exists()) {
+                configEstetica = docSnap.data();
+                localStorage.setItem('estetica_computercell', JSON.stringify(configEstetica));
+                aplicarEsteticaVisual(configEstetica);
+                if (document.getElementById('vista-catalogo').style.display === 'flex') {
+                    renderizarProductos();
+                }
+            }
+        });
+        function aplicarEsteticaVisual(est) {
+            document.documentElement.style.setProperty('--color-primario', est.colorPrimario || '#7C4DFF');
+            document.documentElement.style.setProperty('--color-fondo', est.colorFondo || '#12101f');
+            document.documentElement.style.setProperty('--color-tarjeta', est.colorTarjeta || '#1a172e');
+            document.documentElement.style.setProperty('--color-precio', est.colorPrecio || '#bca0ff'); 
+            const tituloEl = document.getElementById('nombre-tienda-titulo');
+            if (tituloEl) tituloEl.innerHTML = `<strong>${est.nombreTienda || 'Computer Cell'}</strong>`;
+            document.title = `${est.nombreTienda || 'Computer Cell'} - Catálogo`;
+        }
+        function comprimirImagen(file, maxAncho = 600, calidad = 0.75) {
+            return new Promise((resolve) => {
+                const lector = new FileReader();
+                lector.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let ancho = img.width;
+                        let alto = img.height;
+                        if (ancho > maxAncho) {
+                            alto = Math.round((alto * maxAncho) / ancho);
+                            ancho = maxAncho;
+                        }
+                        canvas.width = ancho;
+                        canvas.height = alto;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, ancho, alto);
+                        resolve(canvas.toDataURL('image/jpeg', calidad));
+                    };
+                    img.src = event.target.result;
+                };
+                lector.readAsDataURL(file);
+            });
+        }
+        window.detectarToqueSecreto = function() {
+            if (esAdmin) return;
+            contadorToques++;
+            clearTimeout(temporizadorToques);
+            temporizadorToques = setTimeout(() => { contadorToques = 0; }, 1500);
+            if (contadorToques >= 5) {
+                contadorToques = 0;
+                document.getElementById('admin-email').value = "";
+                document.getElementById('admin-pass').value = "";
+                document.getElementById('modal-login-admin').style.display = 'flex';
+            }
+        };
+        window.verificarAdmin = function() {
+            const correo = document.getElementById('admin-email').value.trim().toLowerCase();
+            const pass = document.getElementById('admin-pass').value;
+            if (CORREOS_AUTORIZADOS.includes(correo) && pass === CLAVE_ADMIN) {
+                esAdmin = true;
+                cerrarModal('modal-login-admin');
+                document.getElementById('indicador-admin').style.display = 'inline-block';
+                document.getElementById('btn-cerrar-sesion-admin').style.display = 'block';
+                document.getElementById('btn-nuevo-producto').style.display = 'inline-block';
+                document.getElementById('btn-estetica').style.display = 'inline-block';
+                alert("¡Bienvenida! Modo Administrador activado.");
+                if (document.getElementById('vista-catalogo').style.display === 'flex') {
+                    renderizarProductos();
+                }
+            } else {
+                alert("Acceso denegado. Correo no autorizado o contraseña incorrecta.");
+            }
+        };
+        window.cerrarSesionAdmin = function() {
+            esAdmin = false;
+            document.getElementById('indicador-admin').style.display = 'none';
+            document.getElementById('btn-cerrar-sesion-admin').style.display = 'none';
+            document.getElementById('btn-nuevo-producto').style.display = 'none';
+            document.getElementById('btn-estetica').style.display = 'none';
+            if (document.getElementById('vista-catalogo').style.display === 'flex') {
+                renderizarProductos();
+            }
+        };
+        window.abrirCatalogo = function(tipo) {
+            modoActual = tipo;
+            categoriaActiva = "Todas";
+            document.getElementById('pantalla-inicio').style.display = 'none';
+            const badge = document.getElementById('badge-tipo');
+            if (tipo === 'mayoreo') {
+                badge.textContent = "⭐ Mayoreo";
+                badge.style.background = "#00C853";
+            } else {
+                badge.textContent = "Detalle";
+                badge.style.background = "var(--color-primario)";
+            }
+            renderizarCategorias();
+            renderizarProductos();
+            document.getElementById('vista-catalogo').style.display = 'flex';
+        };
+        function renderizarCategorias() {
+            const barra = document.getElementById('barra-categorias');
+            barra.innerHTML = "";
+            CATEGORIAS.forEach(cat => {
+                const claseActiva = (cat === categoriaActiva) ? "activa" : "";
+                barra.innerHTML += `
+                    <button class="btn-categoria ${claseActiva}" onclick="filtrarPorCategoria('${cat}')">
+                        ${cat}
+                    </button>
+                `;
+            });
+        }
+        window.filtrarPorCategoria = function(cat) {
+            categoriaActiva = cat;
+            renderizarCategorias();
+            renderizarProductos();
+        };
+        function renderizarProductos() {
+            const contenedor = document.getElementById('lista-productos');
+            contenedor.innerHTML = "";
+            let hayProductos = false;
+            productos.forEach((prod, index) => {
+                const catProducto = prod.categoria || "Accesorios";
+                if (categoriaActiva !== "Todas" && catProducto !== categoriaActiva) {
+                    return;
+                }
+                hayProductos = true;
+                const precioMostrar = (modoActual === 'mayoreo') ? prod.mayoreo : prod.detalle;
+                const tipoTexto = (modoActual === 'mayoreo') ? 'Mayoreo' : 'Detalle';
+                const wspNumero = configEstetica.whatsapp || "50495324898";
+                const mensajeWsp = encodeURIComponent(`Hola ${configEstetica.nombreTienda}, estoy interesado/a en comprar el producto: *${prod.nombre}* a precio de *${tipoTexto}* (${precioMostrar}). ¿Está disponible?`);
+                const enlaceWsp = `https://wa.me/${wspNumero}?text=${mensajeWsp}`;
+                let botonesAdmin = "";
+                if (esAdmin) {
+                    botonesAdmin = `
+                        <div class="admin-botones-tarjeta">
+                            <button class="btn-editar-prod" onclick="abrirModalEditarProducto(${index})" title="Editar producto">✏️</button>
+                            <button class="btn-eliminar-prod" onclick="eliminarProducto(${index})" title="Eliminar producto">✕</button>
+                        </div>
+                    `;
+                }
+                contenedor.innerHTML += `
+                    <div class="card-producto">
+                        <span class="etiqueta-cat-tarjeta">${catProducto}</span>
+                        ${botonesAdmin}
+                        <div class="foto-contenedor" onclick="abrirZoom('${prod.imagen}')" title="Haz clic para agrandar imagen">
+                            <img src="${prod.imagen}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/300x300/311B92/FFFFFF?text=Sin+Imagen'">
+                        </div>
+                        <div class="info-producto">
+                            <h4>${prod.nombre}</h4>
+                            <p class="precio">${precioMostrar}</p>
+                            <a href="${enlaceWsp}" target="_blank" class="btn-whatsapp">
+                                💬 Pedir por WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+            if (!hayProductos) {
+                contenedor.innerHTML = `<div class="mensaje-vacio">No hay productos registrados en la categoría <strong>${categoriaActiva}</strong>.</div>`;
+            }
+        }
+        window.abrirModalEstetica = function() {
+            document.getElementById('est-nombre-tienda').value = configEstetica.nombreTienda || "Computer Cell";
+            document.getElementById('est-whatsapp').value = configEstetica.whatsapp || "50495324898";
+            document.getElementById('est-color-primario').value = configEstetica.colorPrimario || "#7C4DFF";
+            document.getElementById('est-color-fondo').value = configEstetica.colorFondo || "#12101f";
+            document.getElementById('est-color-tarjeta').value = configEstetica.colorTarjeta || "#1a172e";
+            document.getElementById('est-color-precio').value = configEstetica.colorPrecio || "#bca0ff";
+            document.getElementById('modal-estetica').style.display = 'flex';
+        };
+        window.previsualizarEstetica = function() {
+            const tempEst = {
+                nombreTienda: document.getElementById('est-nombre-tienda').value.trim() || "Computer Cell",
+                whatsapp: document.getElementById('est-whatsapp').value.trim() || "50495324898",
+                colorPrimario: document.getElementById('est-color-primario').value,
+                colorFondo: document.getElementById('est-color-fondo').value,
+                colorTarjeta: document.getElementById('est-color-tarjeta').value,
+                colorPrecio: document.getElementById('est-color-precio').value
+            };
+            aplicarEsteticaVisual(tempEst);
+        };
+        window.guardarEstetica = async function() {
+            const nuevaEstetica = {
+                nombreTienda: document.getElementById('est-nombre-tienda').value.trim() || "Computer Cell",
+                whatsapp: document.getElementById('est-whatsapp').value.trim() || "50495324898",
+                colorPrimario: document.getElementById('est-color-primario').value,
+                colorFondo: document.getElementById('est-color-fondo').value,
+                colorTarjeta: document.getElementById('est-color-tarjeta').value,
+                colorPrecio: document.getElementById('est-color-precio').value
+            };
+            configEstetica = nuevaEstetica;
+            aplicarEsteticaVisual(configEstetica);
+            localStorage.setItem('estetica_computercell', JSON.stringify(configEstetica));
+            try {
+                await setDoc(doc(db, "configuracion", "estetica"), configEstetica);
+            } catch (e) {
+                console.error(e);
+            }
+            cerrarModal('modal-estetica');
+            renderizarProductos();
+            alert("¡Estética guardada y actualizada!");
+        };
+        window.restaurarEsteticaDefecto = function() {
+            document.getElementById('est-nombre-tienda').value = "Computer Cell";
+            document.getElementById('est-color-primario').value = "#7C4DFF";
+            document.getElementById('est-color-fondo').value = "#12101f";
+            document.getElementById('est-color-tarjeta').value = "#1a172e";
+            document.getElementById('est-color-precio').value = "#bca0ff";
+            document.getElementById('est-whatsapp').value = "50495324898";
+            previsualizarEstetica();
+        };
+        window.abrirZoom = function(urlImagen) {
+            document.getElementById('img-ampliada').src = urlImagen;
+            document.getElementById('modal-zoom').style.display = 'flex';
+        };
+        window.cerrarZoom = function() {
+            document.getElementById('modal-zoom').style.display = 'none';
+        };
+        window.abrirModalNuevoProducto = function() {
+            document.getElementById('titulo-modal-prod').textContent = "➕ Nuevo Producto";
+            document.getElementById('prod-id-firebase').value = "";
+            document.getElementById('prod-indice').value = "";
+            document.getElementById('prod-nombre').value = "";
+            document.getElementById('prod-categoria').value = "Cargadores";
+            document.getElementById('prod-detalle').value = "";
+            document.getElementById('prod-mayoreo').value = "";
+            document.getElementById('prod-archivo').value = "";
+            document.getElementById('modal-nuevo-prod').style.display = 'flex';
+        };
+        window.abrirModalEditarProducto = function(indice) {
+            const prod = productos[indice];
+            document.getElementById('titulo-modal-prod').textContent = "✏️ Editar Producto";
+            document.getElementById('prod-id-firebase').value = prod.idFirebase || "";
+            document.getElementById('prod-indice').value = indice;
+            document.getElementById('prod-nombre').value = prod.nombre;
+            document.getElementById('prod-categoria').value = prod.categoria || "Accesorios";
+            document.getElementById('prod-detalle').value = prod.detalle;
+            document.getElementById('prod-mayoreo').value = prod.mayoreo;
+            document.getElementById('prod-archivo').value = "";
+            document.getElementById('modal-nuevo-prod').style.display = 'flex';
+        };
+        window.guardarProducto = async function() {
+            const idFirebase = document.getElementById('prod-id-firebase').value;
+            const indice = document.getElementById('prod-indice').value;
+            const nombre = document.getElementById('prod-nombre').value.trim();
+            const categoria = document.getElementById('prod-categoria').value;
+            const detalle = document.getElementById('prod-detalle').value.trim();
+            const mayoreo = document.getElementById('prod-mayoreo').value.trim();
+            const inputArchivo = document.getElementById('prod-archivo');
+            if (!nombre || !detalle || !mayoreo) {
+                alert("Completa al menos el nombre y ambos precios.");
+                return;
+            }
+            let imagenFinal = (indice !== "") ? productos[indice].imagen : "https://via.placeholder.com/300x300/311B92/FFFFFF?text=Producto";
+            if (inputArchivo.files && inputArchivo.files[0]) {
+                imagenFinal = await comprimirImagen(inputArchivo.files[0]);
+            }
+            const datosProducto = { nombre, categoria, detalle, mayoreo, imagen: imagenFinal };
+            try {
+                if (idFirebase) {
+                    await updateDoc(doc(db, "productos", idFirebase), datosProducto);
+                } else {
+                    await addDoc(collection(db, "productos"), datosProducto);
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error al sincronizar con Firebase. Revisa tus reglas de Firestore.");
+            }
+            cerrarModal('modal-nuevo-prod');
+        };
+        window.eliminarProducto = async function(indice) {
+            if (!confirm("¿Seguro que deseas eliminar este producto del catálogo?")) return;
+            const prod = productos[indice];
+            if (prod.idFirebase) {
+                try {
+                    await deleteDoc(doc(db, "productos", prod.idFirebase));
+                } catch (e) {
+                    console.error(e);
+                }
+            } else {
+                productos.splice(indice, 1);
+                localStorage.setItem('productos_computercell', JSON.stringify(productos));
+                renderizarProductos();
+            }
+        };
+        window.volverInicio = function() {
+            document.getElementById('vista-catalogo').style.display = 'none';
+            document.getElementById('pantalla-inicio').style.display = 'flex';
+        };
+        window.abrirModalMayorista = function() {
+            document.getElementById('paso-telefono').style.display = 'block';
+            document.getElementById('paso-codigo').style.display = 'none';
+            document.getElementById('input-telefono').value = "";
+            document.getElementById('input-codigo').value = "";
+            document.getElementById('modal-mayorista').style.display = 'flex';
+        };
+        window.cerrarModal = function(id) {
+            document.getElementById(id).style.display = 'none';
+        };
+        window.enviarCodigoWhatsApp = function() {
+            const tel = document.getElementById('input-telefono').value.trim();
+            if (tel === "") {
+                alert("Por favor, ingresa tu número telefónico.");
+                return;
+            }
+            const indiceAleatorio = Math.floor(Math.random() * CODIGOS_MAYORISTA_DISPONIBLES.length);
+            codigoMayoristaActivo = CODIGOS_MAYORISTA_DISPONIBLES[indiceAleatorio];
+            const wspTienda = configEstetica.whatsapp || "50495324898";
+            const textoMensaje = encodeURIComponent(`Hola ${configEstetica.nombreTienda}, he solicitado acceso al catálogo de mayoreo. Mi código de verificación asignado es: *${codigoMayoristaActivo}*`);
+            window.open(`https://wa.me/${wspTienda}?text=${textoMensaje}`, '_blank');
+            document.getElementById('paso-telefono').style.display = 'none';
+            document.getElementById('paso-codigo').style.display = 'block';
+        };
+        window.verificarCodigo = function() {
+            const codigoIngresado = document.getElementById('input-codigo').value.trim();
+            if (codigoIngresado === codigoMayoristaActivo) {
+                cerrarModal('modal-mayorista');
+                abrirCatalogo('mayoreo');
+            } else {
+                alert("Código incorrecto. Ingresa el código que se generó y envió por WhatsApp.");
+            }
+        };
+    </script>
+</body>
+</html>
