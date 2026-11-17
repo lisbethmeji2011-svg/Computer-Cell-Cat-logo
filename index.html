@@ -151,6 +151,17 @@
             font-weight: 600;
             cursor: pointer;
         }
+        .btn-clientes-admin {
+            display: none;
+            background: #00B0FF;
+            color: #FFFFFF;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
         .btn-estetica-admin {
             display: none;
             background: #FF9100;
@@ -166,8 +177,8 @@
             display: flex;
             gap: 10px;
             overflow-x: auto;
-            padding: 6px 0 18px 0;
-            margin-bottom: 10px;
+            padding: 6px 0 10px 0;
+            margin-bottom: 12px;
             scrollbar-width: none;
         }
         .barra-categorias::-webkit-scrollbar {
@@ -193,6 +204,34 @@
             background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
             color: #FFFFFF;
             border-color: var(--color-primario);
+        }
+        .buscador-contenedor {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .buscador-input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: var(--color-tarjeta);
+            color: var(--color-texto);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        .buscador-input:focus {
+            border-color: var(--color-primario);
+        }
+        .buscador-icono {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            pointer-events: none;
+            opacity: 0.7;
         }
         .contenedor-catalogo {
             width: 100%;
@@ -457,6 +496,33 @@
             color: #fff;
             font-size: 0.9rem;
         }
+        .lista-clientes-box {
+            max-height: 160px;
+            overflow-y: auto;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            background: var(--color-fondo);
+            padding: 6px;
+            text-align: left;
+        }
+        .item-cliente {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-size: 0.9rem;
+        }
+        .btn-eliminar-cliente {
+            background: #FF1744;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
         .modal-acciones {
             display: flex;
             gap: 10px;
@@ -512,12 +578,17 @@
         <div class="barra-superior">
             <span id="indicador-nube" class="estado-nube">☁️ En vivo (Firebase)</span>
             <span id="badge-tipo" class="etiqueta-modo">Precios al Detalle</span>
+            <button id="btn-clientes" class="btn-clientes-admin" onclick="abrirModalClientes()">👥 Mayoristas</button>
             <button id="btn-estetica" class="btn-estetica-admin" onclick="abrirModalEstetica()">🎨 Estética</button>
             <button id="btn-nuevo-producto" class="btn-agregar-admin" onclick="abrirModalNuevoProducto()">➕ Agregar</button>
             <button class="btn-barra" onclick="volverInicio()">⬅ Inicio</button>
         </div>
         <div class="contenedor-catalogo">
             <div class="barra-categorias" id="barra-categorias"></div>
+            <div class="buscador-contenedor">
+                <span class="buscador-icono">🔍</span>
+                <input type="text" id="input-buscar" class="buscador-input" placeholder="Buscar producto por nombre..." oninput="renderizarProductos()">
+            </div>
             <div class="productos-grid" id="lista-productos"></div>
         </div>
     </div>
@@ -530,21 +601,23 @@
     <div id="modal-mayorista" class="modal-fondo">
         <div class="modal-caja">
             <h3>🔐 Acceso Mayorista</h3>
-            <div id="paso-telefono">
-                <p>Ingresa tu número telefónico. Al hacer clic en enviar, se abrirá tu WhatsApp para enviarte el código de verificación automáticamente.</p>
-                <input type="tel" id="input-telefono" class="input-campo" placeholder="Ej: +504 9999-9999">
-                <div class="modal-acciones">
-                    <button class="btn-cancelar" onclick="cerrarModal('modal-mayorista')">Cancelar</button>
-                    <button class="btn-confirmar" onclick="enviarCodigoWhatsApp()">Enviar por WhatsApp</button>
-                </div>
+            <p>Ingresa tu número telefónico registrado para acceder a los precios de mayoreo.</p>
+            <input type="tel" id="input-telefono-val" class="input-campo" placeholder="Ej: +504 9999-9999">
+            <div class="modal-acciones">
+                <button class="btn-cancelar" onclick="cerrarModal('modal-mayorista')">Cancelar</button>
+                <button class="btn-confirmar" onclick="verificarTelefonoMayorista()">Verificar</button>
             </div>
-            <div id="paso-codigo" style="display: none;">
-                <p>Te hemos enviado el código por WhatsApp. Ingrésalo abajo para acceder:</p>
-                <input type="text" id="input-codigo" class="input-campo" placeholder="Ingresa tu código">
-                <div class="modal-acciones">
-                    <button class="btn-cancelar" onclick="cerrarModal('modal-mayorista')">Cancelar</button>
-                    <button class="btn-confirmar" onclick="verificarCodigo()">Acceder</button>
-                </div>
+        </div>
+    </div>
+    <div id="modal-clientes" class="modal-fondo">
+        <div class="modal-caja">
+            <h3>👥 Clientes Mayoristas</h3>
+            <p>Agrega o elimina los números autorizados para ver precios de mayoreo.</p>
+            <input type="tel" id="nuevo-tel-mayorista" class="input-campo" placeholder="Ej: +504 9999-9999">
+            <button class="btn-confirmar" style="width:100%; padding:10px; border-radius:10px; border:none; font-weight:600; margin-bottom:14px; cursor:pointer;" onclick="agregarClienteMayorista()">➕ Agregar Número</button>
+            <div class="lista-clientes-box" id="lista-clientes-box"></div>
+            <div class="modal-acciones">
+                <button class="btn-cancelar" style="width:100%" onclick="cerrarModal('modal-clientes')">Cerrar</button>
             </div>
         </div>
     </div>
@@ -565,7 +638,7 @@
             <h3>🎨 Personalizar Estética</h3>
             <p>Los cambios se sincronizarán en todos los dispositivos.</p>
             <input type="text" id="est-nombre-tienda" class="input-campo" placeholder="Nombre de la tienda">
-            <input type="text" id="est-whatsapp" class="input-campo" placeholder="WhatsApp tienda (Ej: 50495324898)">
+            <input type="text" id="est-whatsapp" class="input-campo" placeholder="WhatsApp tienda (Ej: 50499999999)">
             <div class="fila-color">
                 <label for="est-color-primario">Color Principal (Botones):</label>
                 <input type="color" id="est-color-primario" value="#7C4DFF" oninput="previsualizarEstetica()">
@@ -638,11 +711,6 @@
             "zelayaeuceda@gmail.com"
         ];
         const CLAVE_ADMIN = "ComputerCell2016";
-        const CODIGOS_MAYORISTA_DISPONIBLES = [
-            "2026", "7788", "4590", "1234", "9988", 
-            "5544", "3322", "8899", "6677", "1100"
-        ];
-        let codigoMayoristaActivo = "";
         const CATEGORIAS = ["Todas", "Cargadores", "Audio", "Cables", "Protección", "Accesorios"];
         let categoriaActiva = "Todas";
         let esAdmin = false;
@@ -651,12 +719,13 @@
         let temporizadorToques = null;
         let configEstetica = JSON.parse(localStorage.getItem('estetica_computercell')) || {
             nombreTienda: "Computer Cell",
-            whatsapp: "50495324898",
+            whatsapp: "50400000000",
             colorPrimario: "#7C4DFF",
             colorFondo: "#12101f",
             colorTarjeta: "#1a172e",
             colorPrecio: "#bca0ff"
         };
+        let listaMayoristas = JSON.parse(localStorage.getItem('mayoristas_computercell')) || ["+50499999999", "99999999"];
         const productosPorDefecto = [
             { nombre: "Cargador Rápido 20W", categoria: "Cargadores", detalle: "L 350.00", mayoreo: "L 220.00", imagen: "https://via.placeholder.com/300x300/311B92/FFFFFF?text=Cargador+20W" },
             { nombre: "Audífonos Bluetooth Pro", categoria: "Audio", detalle: "L 650.00", mayoreo: "L 430.00", imagen: "https://via.placeholder.com/300x300/311B92/FFFFFF?text=Audifonos+Pro" },
@@ -688,11 +757,20 @@
                 }
             }
         });
+        onSnapshot(doc(db, "configuracion", "mayoristas"), (docSnap) => {
+            if (docSnap.exists() && docSnap.data().telefonos) {
+                listaMayoristas = docSnap.data().telefonos;
+                localStorage.setItem('mayoristas_computercell', JSON.stringify(listaMayoristas));
+                if (document.getElementById('modal-clientes').style.display === 'flex') {
+                    renderizarListaClientes();
+                }
+            }
+        });
         function aplicarEsteticaVisual(est) {
             document.documentElement.style.setProperty('--color-primario', est.colorPrimario || '#7C4DFF');
             document.documentElement.style.setProperty('--color-fondo', est.colorFondo || '#12101f');
             document.documentElement.style.setProperty('--color-tarjeta', est.colorTarjeta || '#1a172e');
-            document.documentElement.style.setProperty('--color-precio', est.colorPrecio || '#bca0ff'); 
+            document.documentElement.style.setProperty('--color-precio', est.colorPrecio || '#bca0ff');   
             const tituloEl = document.getElementById('nombre-tienda-titulo');
             if (tituloEl) tituloEl.innerHTML = `<strong>${est.nombreTienda || 'Computer Cell'}</strong>`;
             document.title = `${est.nombreTienda || 'Computer Cell'} - Catálogo`;
@@ -743,6 +821,7 @@
                 document.getElementById('btn-cerrar-sesion-admin').style.display = 'block';
                 document.getElementById('btn-nuevo-producto').style.display = 'inline-block';
                 document.getElementById('btn-estetica').style.display = 'inline-block';
+                document.getElementById('btn-clientes').style.display = 'inline-block';
                 alert("¡Bienvenida! Modo Administrador activado.");
                 if (document.getElementById('vista-catalogo').style.display === 'flex') {
                     renderizarProductos();
@@ -757,6 +836,7 @@
             document.getElementById('btn-cerrar-sesion-admin').style.display = 'none';
             document.getElementById('btn-nuevo-producto').style.display = 'none';
             document.getElementById('btn-estetica').style.display = 'none';
+            document.getElementById('btn-clientes').style.display = 'none';
             if (document.getElementById('vista-catalogo').style.display === 'flex') {
                 renderizarProductos();
             }
@@ -764,6 +844,7 @@
         window.abrirCatalogo = function(tipo) {
             modoActual = tipo;
             categoriaActiva = "Todas";
+            document.getElementById('input-buscar').value = "";
             document.getElementById('pantalla-inicio').style.display = 'none';
             const badge = document.getElementById('badge-tipo');
             if (tipo === 'mayoreo') {
@@ -791,22 +872,27 @@
         }
         window.filtrarPorCategoria = function(cat) {
             categoriaActiva = cat;
+            document.getElementById('input-buscar').value = "";
             renderizarCategorias();
             renderizarProductos();
         };
-        function renderizarProductos() {
+        window.renderizarProductos = function() {
             const contenedor = document.getElementById('lista-productos');
             contenedor.innerHTML = "";
             let hayProductos = false;
+            const textoBusqueda = document.getElementById('input-buscar').value.trim().toLowerCase();
             productos.forEach((prod, index) => {
                 const catProducto = prod.categoria || "Accesorios";
                 if (categoriaActiva !== "Todas" && catProducto !== categoriaActiva) {
                     return;
                 }
+                if (textoBusqueda !== "" && !prod.nombre.toLowerCase().includes(textoBusqueda)) {
+                    return;
+                }
                 hayProductos = true;
                 const precioMostrar = (modoActual === 'mayoreo') ? prod.mayoreo : prod.detalle;
                 const tipoTexto = (modoActual === 'mayoreo') ? 'Mayoreo' : 'Detalle';
-                const wspNumero = configEstetica.whatsapp || "50495324898";
+                const wspNumero = configEstetica.whatsapp || "50400000000";
                 const mensajeWsp = encodeURIComponent(`Hola ${configEstetica.nombreTienda}, estoy interesado/a en comprar el producto: *${prod.nombre}* a precio de *${tipoTexto}* (${precioMostrar}). ¿Está disponible?`);
                 const enlaceWsp = `https://wa.me/${wspNumero}?text=${mensajeWsp}`;
                 let botonesAdmin = "";
@@ -817,7 +903,7 @@
                             <button class="btn-eliminar-prod" onclick="eliminarProducto(${index})" title="Eliminar producto">✕</button>
                         </div>
                     `;
-                }
+                } 
                 contenedor.innerHTML += `
                     <div class="card-producto">
                         <span class="etiqueta-cat-tarjeta">${catProducto}</span>
@@ -836,12 +922,81 @@
                 `;
             });
             if (!hayProductos) {
-                contenedor.innerHTML = `<div class="mensaje-vacio">No hay productos registrados en la categoría <strong>${categoriaActiva}</strong>.</div>`;
+                contenedor.innerHTML = `<div class="mensaje-vacio">No se encontraron productos con esos criterios.</div>`;
             }
         }
+        window.abrirModalClientes = function() {
+            renderizarListaClientes();
+            document.getElementById('nuevo-tel-mayorista').value = "";
+            document.getElementById('modal-clientes').style.display = 'flex';
+        };
+        function renderizarListaClientes() {
+            const box = document.getElementById('lista-clientes-box');
+            box.innerHTML = "";
+            if (listaMayoristas.length === 0) {
+                box.innerHTML = `<div style="text-align:center; padding:12px; font-size:0.85rem; color:#bca0ff;">No hay números registrados.</div>`;
+                return;
+            }
+            listaMayoristas.forEach((tel, idx) => {
+                box.innerHTML += `
+                    <div class="item-cliente">
+                        <span>📱 ${tel}</span>
+                        <button class="btn-eliminar-cliente" onclick="eliminarClienteMayorista(${idx})">Eliminar</button>
+                    </div>
+                `;
+            });
+        }
+        window.agregarClienteMayorista = async function() {
+            const telInput = document.getElementById('nuevo-tel-mayorista').value.trim();
+            if (!telInput) {
+                alert("Ingresa un número de teléfono válido.");
+                return;
+            }
+            if (listaMayoristas.includes(telInput)) {
+                alert("Este número ya está registrado.");
+                return;
+            }
+            listaMayoristas.push(telInput);
+            localStorage.setItem('mayoristas_computercell', JSON.stringify(listaMayoristas));
+            try {
+                await setDoc(doc(db, "configuracion", "mayoristas"), { telefonos: listaMayoristas });
+            } catch(e) {
+                console.error(e);
+            }
+            document.getElementById('nuevo-tel-mayorista').value = "";
+            renderizarListaClientes();
+        };
+        window.eliminarClienteMayorista = async function(idx) {
+            listaMayoristas.splice(idx, 1);
+            localStorage.setItem('mayoristas_computercell', JSON.stringify(listaMayoristas));
+            try {
+                await setDoc(doc(db, "configuracion", "mayoristas"), { telefonos: listaMayoristas });
+            } catch(e) {
+                console.error(e);
+            }
+            renderizarListaClientes();
+        };
+        window.abrirModalMayorista = function() {
+            document.getElementById('input-telefono-val').value = "";
+            document.getElementById('modal-mayorista').style.display = 'flex';
+        };
+        window.verificarTelefonoMayorista = function() {
+            let telIngresado = document.getElementById('input-telefono-val').value.trim();
+            if (!telIngresado) {
+                alert("Por favor, ingresa tu número telefónico.");
+                return;
+            }
+            const autorizo = listaMayoristas.some(t => t === telIngresado || t.replace('+', '') === telIngresado.replace('+', ''));
+            if (autorizo) {
+                cerrarModal('modal-mayorista');
+                abrirCatalogo('mayoreo');
+            } else {
+                alert("Acceso denegado: Tu número no está registrado en la lista de clientes mayoristas autorizados.");
+            }
+        };
         window.abrirModalEstetica = function() {
             document.getElementById('est-nombre-tienda').value = configEstetica.nombreTienda || "Computer Cell";
-            document.getElementById('est-whatsapp').value = configEstetica.whatsapp || "50495324898";
+            document.getElementById('est-whatsapp').value = configEstetica.whatsapp || "50400000000";
             document.getElementById('est-color-primario').value = configEstetica.colorPrimario || "#7C4DFF";
             document.getElementById('est-color-fondo').value = configEstetica.colorFondo || "#12101f";
             document.getElementById('est-color-tarjeta').value = configEstetica.colorTarjeta || "#1a172e";
@@ -851,7 +1006,7 @@
         window.previsualizarEstetica = function() {
             const tempEst = {
                 nombreTienda: document.getElementById('est-nombre-tienda').value.trim() || "Computer Cell",
-                whatsapp: document.getElementById('est-whatsapp').value.trim() || "50495324898",
+                whatsapp: document.getElementById('est-whatsapp').value.trim(),
                 colorPrimario: document.getElementById('est-color-primario').value,
                 colorFondo: document.getElementById('est-color-fondo').value,
                 colorTarjeta: document.getElementById('est-color-tarjeta').value,
@@ -862,7 +1017,7 @@
         window.guardarEstetica = async function() {
             const nuevaEstetica = {
                 nombreTienda: document.getElementById('est-nombre-tienda').value.trim() || "Computer Cell",
-                whatsapp: document.getElementById('est-whatsapp').value.trim() || "50495324898",
+                whatsapp: document.getElementById('est-whatsapp').value.trim() || "50400000000",
                 colorPrimario: document.getElementById('est-color-primario').value,
                 colorFondo: document.getElementById('est-color-fondo').value,
                 colorTarjeta: document.getElementById('est-color-tarjeta').value,
@@ -886,7 +1041,6 @@
             document.getElementById('est-color-fondo').value = "#12101f";
             document.getElementById('est-color-tarjeta').value = "#1a172e";
             document.getElementById('est-color-precio').value = "#bca0ff";
-            document.getElementById('est-whatsapp').value = "50495324898";
             previsualizarEstetica();
         };
         window.abrirZoom = function(urlImagen) {
@@ -939,66 +1093,40 @@
             try {
                 if (idFirebase) {
                     await updateDoc(doc(db, "productos", idFirebase), datosProducto);
+                    productos[indice] = { idFirebase, ...datosProducto };
                 } else {
-                    await addDoc(collection(db, "productos"), datosProducto);
+                    const docRef = await addDoc(collection(db, "productos"), datosProducto);
+                    productos.push({ idFirebase: docRef.id, ...datosProducto });
                 }
+                localStorage.setItem('productos_computercell', JSON.stringify(productos));
+                renderizarProductos();
             } catch (e) {
                 console.error(e);
-                alert("Error al sincronizar con Firebase. Revisa tus reglas de Firestore.");
+                alert("Error al sincronizar con Firebase.");
             }
             cerrarModal('modal-nuevo-prod');
         };
         window.eliminarProducto = async function(indice) {
             if (!confirm("¿Seguro que deseas eliminar este producto del catálogo?")) return;
             const prod = productos[indice];
-            if (prod.idFirebase) {
-                try {
+            try {
+                if (prod.idFirebase) {
                     await deleteDoc(doc(db, "productos", prod.idFirebase));
-                } catch (e) {
-                    console.error(e);
                 }
-            } else {
                 productos.splice(indice, 1);
                 localStorage.setItem('productos_computercell', JSON.stringify(productos));
                 renderizarProductos();
+            } catch (e) {
+                console.error(e);
+                alert("Error al eliminar el producto.");
             }
         };
         window.volverInicio = function() {
             document.getElementById('vista-catalogo').style.display = 'none';
             document.getElementById('pantalla-inicio').style.display = 'flex';
         };
-        window.abrirModalMayorista = function() {
-            document.getElementById('paso-telefono').style.display = 'block';
-            document.getElementById('paso-codigo').style.display = 'none';
-            document.getElementById('input-telefono').value = "";
-            document.getElementById('input-codigo').value = "";
-            document.getElementById('modal-mayorista').style.display = 'flex';
-        };
         window.cerrarModal = function(id) {
             document.getElementById(id).style.display = 'none';
-        };
-        window.enviarCodigoWhatsApp = function() {
-            const tel = document.getElementById('input-telefono').value.trim();
-            if (tel === "") {
-                alert("Por favor, ingresa tu número telefónico.");
-                return;
-            }
-            const indiceAleatorio = Math.floor(Math.random() * CODIGOS_MAYORISTA_DISPONIBLES.length);
-            codigoMayoristaActivo = CODIGOS_MAYORISTA_DISPONIBLES[indiceAleatorio];
-            const wspTienda = configEstetica.whatsapp || "50495324898";
-            const textoMensaje = encodeURIComponent(`Hola ${configEstetica.nombreTienda}, he solicitado acceso al catálogo de mayoreo. Mi código de verificación asignado es: *${codigoMayoristaActivo}*`);
-            window.open(`https://wa.me/${wspTienda}?text=${textoMensaje}`, '_blank');
-            document.getElementById('paso-telefono').style.display = 'none';
-            document.getElementById('paso-codigo').style.display = 'block';
-        };
-        window.verificarCodigo = function() {
-            const codigoIngresado = document.getElementById('input-codigo').value.trim();
-            if (codigoIngresado === codigoMayoristaActivo) {
-                cerrarModal('modal-mayorista');
-                abrirCatalogo('mayoreo');
-            } else {
-                alert("Código incorrecto. Ingresa el código que se generó y envió por WhatsApp.");
-            }
         };
     </script>
 </body>
