@@ -1312,6 +1312,21 @@
             document.getElementById('anio-actual').textContent = new Date().getFullYear();
             aplicarConfiguracionVisual();
 
+            // Timeout de seguridad por si Firestore tarda o bloquea la autenticación
+            let conexionEstablecida = false;
+            const timerSeguridad = setTimeout(() => {
+                if (!conexionEstablecida) {
+                    console.warn("⚠️ Firestore tardó en responder. Activando modo local autónomo para permitir edición.");
+                    document.getElementById('texto-sync-inicio').textContent = "Modo autónomo (Local)";
+                    document.getElementById('badge-sync-inicio').className = "text-xs px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/40 flex items-center gap-1.5";
+                    if (productosGlobales.length === 0) {
+                        productosGlobales = PRODUCTOS_INICIALES_SEED.map((p, idx) => ({ id: `local-${idx}`, ...p }));
+                        renderizarCatalogo();
+                        actualizarContadoresCapacidad();
+                    }
+                }
+            }, 3500);
+
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
@@ -1320,22 +1335,28 @@
                 }
 
                 onSnapshot(docConfigRef, async (snap) => {
+                    conexionEstablecida = true;
+                    clearTimeout(timerSeguridad);
                     if (snap.exists()) {
                         const data = snap.data();
                         estadoConfig = { ...estadoConfig, ...data, iconos: { ...estadoConfig.iconos, ...(data.iconos || {}) }, mayoristas: data.mayoristas || estadoConfig.mayoristas, adminsExtra: data.adminsExtra || [] };
                     } else {
-                        await setDoc(docConfigRef, estadoConfig);
+                        await setDoc(docConfigRef, estadoConfig).catch(() => {});
                     }
                     aplicarConfiguracionVisual();
                     renderizarCategorias();
                     renderizarCatalogo();
+                }, (error) => {
+                    console.warn("Error en config snapshot:", error);
                 });
 
                 onSnapshot(colProductosRef, async (snapshot) => {
+                    conexionEstablecida = true;
+                    clearTimeout(timerSeguridad);
                     if (snapshot.empty && !firebaseListo) {
                         firebaseListo = true;
                         for (const item of PRODUCTOS_INICIALES_SEED) {
-                            await addDoc(colProductosRef, item);
+                            await addDoc(colProductosRef, item).catch(() => {});
                         }
                         return;
                     }
@@ -1347,12 +1368,18 @@
                     renderizarCatalogo();
                     actualizarContadoresCapacidad();
                     if (usuarioAdminLogueado) renderizarListaAdminProductos();
+                }, (error) => {
+                    console.warn("Error en productos snapshot:", error);
                 });
             } catch (err) {
+                clearTimeout(timerSeguridad);
                 console.error("Error nube:", err);
-                productosGlobales = PRODUCTOS_INICIALES_SEED.map((p, idx) => ({ id: `local-${idx}`, ...p }));
-                renderizarCatalogo();
+                if (productosGlobales.length === 0) {
+                    productosGlobales = PRODUCTOS_INICIALES_SEED.map((p, idx) => ({ id: `local-${idx}`, ...p }));
+                    renderizarCatalogo();
+                }
                 document.getElementById('texto-sync-inicio').textContent = "Modo local";
+                document.getElementById('badge-sync-inicio').className = "text-xs px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/40 flex items-center gap-1.5";
             }
         }
 
