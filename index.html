@@ -503,31 +503,34 @@
                 <div id="tab-contenido-diseno" class="hidden space-y-5">
                     <!-- Sub-sección A: Editor de Logotipo -->
                     <div class="bg-[#1e1a33] border border-white/10 rounded-2xl p-4 sm:p-5">
-                        <h3 class="font-bold text-sm sm:text-base text-purple-300 mb-3">🖼️ Editor de Logotipo de Computer Cell</h3>
+                        <h3 class="font-bold text-sm sm:text-base text-purple-300 mb-3">🖼️ Editor de Logotipo Oficial (./logo.png)</h3>
                         <div class="flex flex-col sm:flex-row items-center gap-4">
-                            <div class="w-36 h-28 rounded-2xl bg-[#110f1d] border border-white/15 flex items-center justify-center p-2 overflow-hidden">
-                                <div id="preview-logo-admin"></div>
+                            <div class="w-40 h-28 rounded-2xl bg-white/95 border border-purple-500/40 flex items-center justify-center p-2 overflow-hidden shadow-inner">
+                                <div id="preview-logo-admin" class="flex items-center justify-center w-full h-full"></div>
                             </div>
                             <div class="flex-1 w-full space-y-2.5">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                     <div>
-                                        <label class="block text-xs text-gray-300 mb-1">Subir nuevo logo (PNG/JPG/SVG)</label>
+                                        <label class="block text-xs text-gray-300 mb-1">Subir PNG/JPG del logo (sincroniza en la nube)</label>
                                         <input type="file" id="diseno-logo-archivo" accept="image/*" onchange="procesarLogoArchivo(this)" class="w-full p-2 rounded-xl bg-[#110f1d] border border-white/15 text-xs text-gray-300">
                                     </div>
                                     <div>
-                                        <label class="block text-xs text-gray-300 mb-1">O pegar URL de imagen del logo</label>
-                                        <input type="url" id="diseno-logo-url" placeholder="https://..." oninput="actualizarPreviewLogoUrl()" class="w-full p-2 rounded-xl bg-[#110f1d] border border-white/15 text-xs text-white outline-none">
+                                        <label class="block text-xs text-gray-300 mb-1">Ruta o URL del logo (predeterminado: ./logo.png)</label>
+                                        <input type="text" id="diseno-logo-url" placeholder="./logo.png" oninput="actualizarPreviewLogoUrl()" class="w-full p-2 rounded-xl bg-[#110f1d] border border-white/15 text-xs text-white outline-none">
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
                                     <div class="flex items-center gap-2 flex-1 min-w-[200px]">
-                                        <label class="text-xs text-gray-300 whitespace-nowrap">Tamaño: <span id="valor-tamano-logo">155</span>px</label>
-                                        <input type="range" id="diseno-logo-tamano" min="90" max="260" value="155" oninput="actualizarTamanoLogoPreview(this.value)" class="w-full accent-purple-500">
+                                        <label class="text-xs text-gray-300 whitespace-nowrap">Tamaño: <span id="valor-tamano-logo">175</span>px</label>
+                                        <input type="range" id="diseno-logo-tamano" min="90" max="280" value="175" oninput="actualizarTamanoLogoPreview(this.value)" class="w-full accent-purple-500">
                                     </div>
                                     <button onclick="restaurarLogoOriginal()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-purple-200 cursor-pointer">
-                                        ↺ Restaurar Logo Original
+                                        ↺ Restaurar ./logo.png Original
                                     </button>
                                 </div>
+                                <p class="text-[11px] text-gray-400">
+                                    📁 Para Netlify: guarda tu imagen transparente como <code class="text-purple-300">logo.png</code> en la misma carpeta junto a <code class="text-purple-300">index.html</code>, o súbela arriba para sincronizarla al instante en todos los dispositivos.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -800,22 +803,16 @@
             { nombre: "Repuestos", iconoKey: "catRepuestos", defaultIcono: "⚙️" }
         ];
 
-        // Logotipo SVG fiel al diseño original de Computer Cell
-        const LOGO_SVG_ORIGINAL = `
-            <svg viewBox="0 0 360 220" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
-                <path d="M128,28 C68,28 24,68 24,116 C24,166 68,204 126,204 C168,204 202,182 214,142 L152,142 C145,164 132,174 112,174 C76,174 54,148 54,114 C54,80 78,56 114,56 L176,56 C164,38 148,28 128,28 Z" fill="#4A2B82"/>
-                <path d="M118,16 C64,16 26,56 26,104 C26,144 54,174 96,182 C66,168 48,140 48,108 C48,70 76,46 116,46 L174,46 C164,26 144,16 118,16 Z" fill="#8B5CF6"/>
-                <text x="116" y="114" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-weight="800" font-size="31" letter-spacing="1">COMPUTER</text>
-                <text x="218" y="182" fill="#8B5CF6" font-family="Inter, Arial, sans-serif" font-weight="900" font-size="36" letter-spacing="1.5">CELL</text>
-            </svg>
-        `;
+        // Ruta oficial del logotipo PNG transparente original proporcionado por el usuario
+        const DEFAULT_LOGO_URL = "./logo.png";
+        const FALLBACK_LOGO_FILENAME = "./WhatsApp_Image_2026-11-13_at_2.38.32_PM-removebg-preview (1).png";
 
         let estadoConfig = {
             nombreTienda: "Computer Cell",
             whatsapp: "50495324898",
-            logoTipo: "svg_original", // 'svg_original' | 'imagen'
-            logoUrl: "",
-            logoTamano: 165,
+            logoTipo: "local_png", // 'local_png' | 'imagen'
+            logoUrl: DEFAULT_LOGO_URL,
+            logoTamano: 175,
             colorPrimario: "#7C4DFF",
             colorSecundario: "#4527A0",
             colorFondo: "#110f1d",
@@ -907,103 +904,40 @@
         ];
 
         // ---------------------------------------------------------
-        // INICIALIZACIÓN DE AUTENTICACIÓN Y SINCRONIZACIÓN REAL-TIME
+        // RENDERIZADO DE LOGOTIPO OFICIAL (./logo.png), ESTÉTICA E ÍCONOS
         // ---------------------------------------------------------
-        async function iniciarConexionNube() {
-            document.getElementById('anio-actual').textContent = new Date().getFullYear();
-            aplicarConfiguracionVisual();
-
-            try {
-                // Regla 3: Autenticar antes de consultar Firestore
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-                firebaseListo = true;
-                suscribirTiempoReal();
-            } catch (error) {
-                console.error("Error de autenticación:", error);
-                actualizarEstadoSync("Modo local temporal", false);
+        window.manejarErrorLogo = function(imgEl) {
+            const intento = Number(imgEl.dataset.intento || "0");
+            if (intento === 0) {
+                imgEl.dataset.intento = "1";
+                imgEl.src = FALLBACK_LOGO_FILENAME;
+                return;
             }
-        }
-
-        function actualizarEstadoSync(texto, activo) {
-            const el = document.getElementById('texto-sync-inicio');
-            if (el) el.textContent = texto;
-        }
-
-        function suscribirTiempoReal() {
-            // 1. Escuchar cambios globales de configuración (Diseño, Logo, Íconos, Mayoristas, Equipo)
-            onSnapshot(docConfigRef, async (snap) => {
-                if (snap.exists()) {
-                    const data = snap.data();
-                    estadoConfig = {
-                        ...estadoConfig,
-                        ...data,
-                        iconos: { ...estadoConfig.iconos, ...(data.iconos || {}) },
-                        mayoristas: Array.isArray(data.mayoristas) ? data.mayoristas : estadoConfig.mayoristas,
-                        adminsExtra: Array.isArray(data.adminsExtra) ? data.adminsExtra : []
-                    };
-                    aplicarConfiguracionVisual();
-                    if (!document.getElementById('vista-catalogo').classList.contains('hidden')) {
-                        renderizarCategorias();
-                        renderizarCatalogo();
-                    }
-                    if (!document.getElementById('modal-panel-anfitrion').classList.contains('hidden')) {
-                        renderizarListaMayoristas();
-                        renderizarListaCorreosAdmin();
-                    }
-                } else {
-                    // Inicializar documento de configuración global la primera vez
-                    await setDoc(docConfigRef, estadoConfig);
-                }
-            }, (err) => {
-                console.error("Error en listener de configuración:", err);
-            });
-
-            // 2. Escuchar colección global de productos en tiempo real
-            onSnapshot(colProductosRef, async (snapshot) => {
-                if (snapshot.empty && !sessionStorage.getItem('cc_seed_hecho')) {
-                    sessionStorage.setItem('cc_seed_hecho', '1');
-                    for (const item of PRODUCTOS_INICIALES_SEED) {
-                        await addDoc(colProductosRef, item);
-                    }
+            if (intento === 1) {
+                imgEl.dataset.intento = "2";
+                const logoLocalCache = localStorage.getItem('cc_logo_png_cache');
+                if (logoLocalCache) {
+                    imgEl.src = logoLocalCache;
                     return;
                 }
-
-                const lista = [];
-                snapshot.forEach((docItem) => {
-                    lista.push({ id: docItem.id, ...docItem.data() });
-                });
-
-                // Ordenar en memoria (Regla 2: sin orderBy compuesto)
-                lista.sort((a, b) => (b.creadoEn || 0) - (a.creadoEn || 0));
-                productosGlobales = lista;
-
-                actualizarContadoresCapacidad();
-                actualizarEstadoSync("Sincronizado en tiempo real", true);
-
-                if (!document.getElementById('vista-catalogo').classList.contains('hidden')) {
-                    renderizarCatalogo();
-                }
-                if (!document.getElementById('modal-panel-anfitrion').classList.contains('hidden')) {
-                    renderizarListaAdminProductos();
-                }
-            }, (err) => {
-                console.error("Error en listener de productos:", err);
-                actualizarEstadoSync("Reconectando...", false);
-            });
-        }
-
-        // ---------------------------------------------------------
-        // RENDERIZADO DE LOGOTIPO, ESTÉTICA E ÍCONOS
-        // ---------------------------------------------------------
-        function obtenerHtmlLogo(tamanoPx) {
-            if (estadoConfig.logoTipo === 'imagen' && estadoConfig.logoUrl) {
-                return `<img src="${estadoConfig.logoUrl}" alt="${estadoConfig.nombreTienda}" style="width:${tamanoPx}px; max-width:100%; height:auto; object-fit:contain;" onerror="this.src='https://placehold.co/240x140/241744/FFFFFF?text=Computer+Cell'">`;
             }
-            return `<div style="width:${tamanoPx}px; max-width:100%;">${LOGO_SVG_ORIGINAL}</div>`;
+            // Si aún no se ha colocado logo.png en la carpeta, mostrar guía discreta sin generar logos falsos
+            const contenedor = imgEl.parentElement;
+            if (contenedor) {
+                contenedor.innerHTML = `
+                    <div class="px-4 py-3 rounded-xl bg-purple-950/70 border border-purple-400/40 text-center max-w-xs">
+                        <p class="text-sm font-extrabold text-white tracking-wide">COMPUTER CELL</p>
+                        <p class="text-[11px] text-purple-200 mt-1">Coloca tu archivo <code class="bg-black/40 px-1 rounded">logo.png</code> junto a <code class="bg-black/40 px-1 rounded">index.html</code> o súbelo en el Panel de Anfitrión.</p>
+                    </div>
+                `;
+            }
+        };
+
+        function obtenerHtmlLogo(tamanoPx) {
+            const fuenteLogo = (estadoConfig.logoUrl && estadoConfig.logoTipo !== 'svg_original')
+                ? estadoConfig.logoUrl
+                : DEFAULT_LOGO_URL;
+            return `<img src="${fuenteLogo}" alt="${estadoConfig.nombreTienda}" data-intento="0" onerror="manejarErrorLogo(this)" style="width:${tamanoPx}px; max-width:100%; height:auto; object-fit:contain; display:block;">`;
         }
 
         function renderizarIcono(valor) {
@@ -1590,7 +1524,7 @@
 
             const filtrados = productosGlobales
                 .filter(p => !filtro || p.nombre.toLowerCase().includes(filtro) || (p.categoria || "").toLowerCase().includes(filtro))
-                .slice(0, 60);
+                .slice(0, 60); // Renderizamos hasta 60 coincidencias rápidas en el modal para fluidez extrema
 
             if (filtrados.length === 0) {
                 contenedor.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">No hay productos que coincidan.</p>`;
@@ -1614,13 +1548,20 @@
             `).join('');
         };
 
+        // ---------------------------------------------------------
+        // MÓDULO DISEÑO, LOGO E ÍCONOS EN EL PANEL DE ANFITRIÓN
+        // ---------------------------------------------------------
         let borradorDiseno = null;
 
         function cargarValoresFormularioDiseno() {
             borradorDiseno = JSON.parse(JSON.stringify(estadoConfig));
-            document.getElementById('diseno-logo-url').value = borradorDiseno.logoTipo === 'imagen' ? borradorDiseno.logoUrl : '';
-            document.getElementById('diseno-logo-tamano').value = borradorDiseno.logoTamano || 165;
-            document.getElementById('valor-tamano-logo').textContent = borradorDiseno.logoTamano || 165;
+            if (!borradorDiseno.logoUrl || borradorDiseno.logoTipo === 'svg_original') {
+                borradorDiseno.logoTipo = 'local_png';
+                borradorDiseno.logoUrl = DEFAULT_LOGO_URL;
+            }
+            document.getElementById('diseno-logo-url').value = borradorDiseno.logoUrl;
+            document.getElementById('diseno-logo-tamano').value = borradorDiseno.logoTamano || 175;
+            document.getElementById('valor-tamano-logo').textContent = borradorDiseno.logoTamano || 175;
             actualizarPreviewLogoAdmin();
 
             document.getElementById('diseno-nombre-tienda').value = borradorDiseno.nombreTienda || "Computer Cell";
@@ -1645,35 +1586,60 @@
         function actualizarPreviewLogoAdmin() {
             const box = document.getElementById('preview-logo-admin');
             if (!box || !borradorDiseno) return;
-            if (borradorDiseno.logoTipo === 'imagen' && borradorDiseno.logoUrl) {
-                box.innerHTML = `<img src="${borradorDiseno.logoUrl}" alt="Logo" class="max-h-24 w-auto object-contain">`;
-            } else {
-                box.innerHTML = `<div class="w-28">${LOGO_SVG_ORIGINAL}</div>`;
-            }
+            const srcPreview = borradorDiseno.logoUrl || DEFAULT_LOGO_URL;
+            box.innerHTML = `<img src="${srcPreview}" alt="Logo Computer Cell" data-intento="0" onerror="manejarErrorLogo(this)" class="max-h-24 w-auto object-contain">`;
         }
 
         window.procesarLogoArchivo = async function(input) {
             if (!input.files || !input.files[0]) return;
             try {
-                const dataUrl = await comprimirImagenArchivo(input.files[0], 450, 0.85);
+                // Preservar transparencia PNG al subir el logotipo
+                const dataUrl = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const maxDim = 520;
+                            let w = img.width;
+                            let h = img.height;
+                            if (w > maxDim || h > maxDim) {
+                                if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+                                else { w = Math.round((w * maxDim) / h); h = maxDim; }
+                            }
+                            const canvas = document.createElement('canvas');
+                            canvas.width = w;
+                            canvas.height = h;
+                            const ctx = canvas.getContext('2d');
+                            ctx.clearRect(0, 0, w, h);
+                            ctx.drawImage(img, 0, 0, w, h);
+                            resolve(canvas.toDataURL('image/png'));
+                        };
+                        img.onerror = reject;
+                        img.src = e.target.result;
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(input.files[0]);
+                });
+
                 borradorDiseno.logoTipo = 'imagen';
                 borradorDiseno.logoUrl = dataUrl;
-                document.getElementById('diseno-logo-url').value = "";
+                localStorage.setItem('cc_logo_png_cache', dataUrl);
+                document.getElementById('diseno-logo-url').value = "Imagen PNG cargada desde dispositivo";
                 actualizarPreviewLogoAdmin();
-                mostrarToast("Logo cargado en vista previa. Haz clic en Guardar para publicar.", "info");
+                mostrarToast("Tu logo PNG transparente se cargó. Presiona 'Guardar y Sincronizar' para publicarlo en todos los dispositivos.", "success");
             } catch (e) {
-                mostrarToast("No se pudo procesar la imagen del logo.", "warning");
+                mostrarToast("No se pudo procesar el archivo PNG del logo.", "warning");
             }
         };
 
         window.actualizarPreviewLogoUrl = function() {
             const url = document.getElementById('diseno-logo-url').value.trim();
-            if (url) {
+            if (url && url !== "Imagen PNG cargada desde dispositivo") {
                 borradorDiseno.logoTipo = 'imagen';
                 borradorDiseno.logoUrl = url;
-            } else {
-                borradorDiseno.logoTipo = 'svg_original';
-                borradorDiseno.logoUrl = '';
+            } else if (!url) {
+                borradorDiseno.logoTipo = 'local_png';
+                borradorDiseno.logoUrl = DEFAULT_LOGO_URL;
             }
             actualizarPreviewLogoAdmin();
         };
@@ -1684,15 +1650,15 @@
         };
 
         window.restaurarLogoOriginal = function() {
-            borradorDiseno.logoTipo = 'svg_original';
-            borradorDiseno.logoUrl = '';
-            borradorDiseno.logoTamano = 165;
-            document.getElementById('diseno-logo-url').value = "";
+            borradorDiseno.logoTipo = 'local_png';
+            borradorDiseno.logoUrl = DEFAULT_LOGO_URL;
+            borradorDiseno.logoTamano = 175;
+            document.getElementById('diseno-logo-url').value = DEFAULT_LOGO_URL;
             document.getElementById('diseno-logo-archivo').value = "";
-            document.getElementById('diseno-logo-tamano').value = 165;
-            document.getElementById('valor-tamano-logo').textContent = "165";
+            document.getElementById('diseno-logo-tamano').value = 175;
+            document.getElementById('valor-tamano-logo').textContent = "175";
             actualizarPreviewLogoAdmin();
-            mostrarToast("Logo original restaurado en vista previa.", "info");
+            mostrarToast("Restaurado al archivo oficial ./logo.png. Guarda para sincronizar.", "info");
         };
 
         window.aplicarTemaRapido = function(tema) {
@@ -1773,6 +1739,9 @@
             }
         };
 
+        // ---------------------------------------------------------
+        // GESTIÓN DE CLIENTES MAYORISTAS Y EQUIPO ADMINISTRADOR
+        // ---------------------------------------------------------
         function renderizarListaMayoristas() {
             const box = document.getElementById('lista-admin-mayoristas');
             if (!box) return;
@@ -1850,7 +1819,10 @@
             await setDoc(docConfigRef, { ...estadoConfig, adminsExtra: nuevosExtras });
             mostrarToast("Colaborador removido.", "info");
         };
-        
+
+        // ---------------------------------------------------------
+        // UTILIDADES DE UI (MODALES, TOASTS, SEGURIDAD HTML)
+        // ---------------------------------------------------------
         window.abrirModal = function(id) {
             const el = document.getElementById(id);
             if (el) {
@@ -1894,7 +1866,80 @@
             return String(str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
         }
 
-        // Arrancar aplicación
+        // ---------------------------------------------------------
+        // INICIALIZACIÓN Y SINCRONIZACIÓN EN TIEMPO REAL (FIRESTORE)
+        // ---------------------------------------------------------
+        async function iniciarConexionNube() {
+            document.getElementById('anio-actual').textContent = new Date().getFullYear();
+            aplicarConfiguracionVisual();
+
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                // Escuchar configuración general en tiempo real
+                onSnapshot(docConfigRef, async (snap) => {
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        estadoConfig = {
+                            ...estadoConfig,
+                            ...data,
+                            iconos: { ...estadoConfig.iconos, ...(data.iconos || {}) },
+                            mayoristas: Array.isArray(data.mayoristas) ? data.mayoristas : estadoConfig.mayoristas,
+                            adminsExtra: Array.isArray(data.adminsExtra) ? data.adminsExtra : []
+                        };
+                    } else {
+                        await setDoc(docConfigRef, estadoConfig);
+                    }
+                    aplicarConfiguracionVisual();
+                    renderizarCategorias();
+                    renderizarCatalogo();
+                    if (usuarioAdminLogueado) {
+                        renderizarListaMayoristas();
+                        renderizarListaCorreosAdmin();
+                    }
+                }, (error) => {
+                    console.warn("Aviso en escucha de configuración:", error);
+                });
+
+                // Escuchar catálogo de productos en tiempo real
+                onSnapshot(colProductosRef, async (snapshot) => {
+                    if (snapshot.empty && !firebaseListo) {
+                        firebaseListo = true;
+                        for (const item of PRODUCTOS_INICIALES_SEED) {
+                            await addDoc(colProductosRef, item);
+                        }
+                        return;
+                    }
+                    firebaseListo = true;
+
+                    const lista = [];
+                    snapshot.forEach((docSnap) => {
+                        lista.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    lista.sort((a, b) => (b.creadoEn || 0) - (a.creadoEn || 0));
+                    productosGlobales = lista;
+
+                    renderizarCatalogo();
+                    actualizarContadoresCapacidad();
+                    if (usuarioAdminLogueado) {
+                        renderizarListaAdminProductos();
+                    }
+                }, (error) => {
+                    console.warn("Aviso en escucha de productos:", error);
+                    document.getElementById('texto-sync-inicio').textContent = "Modo local activo";
+                });
+            } catch (err) {
+                console.error("Error inicializando conexión:", err);
+                productosGlobales = PRODUCTOS_INICIALES_SEED.map((p, idx) => ({ id: `local-${idx}`, ...p }));
+                renderizarCatalogo();
+                document.getElementById('texto-sync-inicio').textContent = "Sin conexión a nube";
+            }
+        }
+        
         iniciarConexionNube();
     </script>
 </body>
