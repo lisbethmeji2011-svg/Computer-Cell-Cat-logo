@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Cell - Catálogo</title>
+    <title>Computer Cell - Catálogo Digital en Tiempo Real</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +19,6 @@
             --color-whatsapp: #25D366;
             --radio-borde: 16px;
             --fuente-app: 'Inter', sans-serif;
-            --tamano-logo: 155px;
         }
 
         * {
@@ -36,7 +35,6 @@
             overflow-x: hidden;
         }
 
-        /* Fondo tecnológico opcional */
         body.fondo-tech {
             background-image:
                 radial-gradient(circle at 15% 20%, rgba(124, 77, 255, 0.14) 0%, transparent 42%),
@@ -46,7 +44,6 @@
             background-size: 100% 100%, 100% 100%, 34px 34px, 34px 34px;
         }
 
-        /* Animaciones del logotipo */
         @keyframes logoFloat {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-8px); }
@@ -70,7 +67,6 @@
         .anim-logo-glow { animation: logoGlow 3s ease-in-out infinite; }
         .anim-logo-bounce { animation: logoBounce 2.4s ease-in-out infinite; }
 
-        /* Animaciones de tarjetas */
         .card-producto {
             background-color: var(--color-tarjeta);
             border-radius: var(--radio-borde);
@@ -94,7 +90,6 @@
             animation: fadeUpCard 0.35s ease both;
         }
 
-        /* Animación de botones */
         .anim-btn-pulse .btn-interactivo:hover {
             transform: translateY(-2px) scale(1.015);
             box-shadow: 0 8px 22px rgba(124, 77, 255, 0.4);
@@ -120,17 +115,16 @@
             filter: brightness(0.93);
         }
 
-        /* Scrollbar limpio */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="anim-card-lift anim-btn-pulse">
 
-    <!-- NOTIFICACIÓN FLOTANTE PERSONALIZADA (SIN ALERT()) -->
+    <!-- Notificación flotante -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 max-w-sm w-[90vw] sm:w-auto pointer-events-none"></div>
 
-    <!-- MODAL DE AVISO / ALERTA IMPORTANTE (SIN ALERT()) -->
+    <!-- Modal de Aviso -->
     <div id="modal-aviso" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[180] hidden items-center justify-center p-4">
         <div class="bg-[#1a172c] border-2 border-amber-500 rounded-2xl max-w-md w-full p-6 text-center shadow-2xl">
             <div id="aviso-icono" class="text-4xl mb-3">⚠️</div>
@@ -142,7 +136,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE CONFIRMACIÓN PERSONALIZADO (SIN CONFIRM()) -->
+    <!-- Modal de Confirmación -->
     <div id="modal-confirmar" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[180] hidden items-center justify-center p-4">
         <div class="bg-[#1a172c] border-2 border-red-500 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
             <div class="text-3xl mb-2">🗑️</div>
@@ -155,11 +149,8 @@
         </div>
     </div>
 
-    <!-- =========================================================
-         PANTALLA PRINCIPAL DE BIENVENIDA
-    ========================================================== -->
+    <!-- ================= PANTALLA DE BIENVENIDA ================= -->
     <section id="pantalla-inicio" class="min-h-screen flex flex-col justify-between items-center px-5 py-8 relative">
-        <!-- Barra superior mínima en bienvenida -->
         <div class="w-full max-w-5xl flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <span id="badge-sync-inicio" class="text-xs px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 flex items-center gap-1.5">
@@ -178,11 +169,8 @@
             </div>
         </div>
 
-        <!-- Centro: Logotipo Computer Cell + 2 Botones principales -->
         <div class="flex flex-col items-center text-center max-w-md w-full my-auto py-8">
-            <!-- Contenedor del Logo (5 toques abre panel oculto) -->
             <div id="contenedor-logo-inicio" onclick="detectarToqueSecreto()" title="Computer Cell" class="cursor-pointer select-none mb-5 flex flex-col items-center justify-center p-4 rounded-3xl bg-white/[0.03] border border-white/10 shadow-2xl">
-                <!-- SVG Original recreado fielmente al logotipo de Computer Cell -->
                 <div id="render-logo-inicio" class="anim-logo-float flex items-center justify-center"></div>
             </div>
 
@@ -191,7 +179,6 @@
                 Tecnología, teléfonos, accesorios y servicio técnico especializado.
             </p>
 
-            <!-- Dos botones principales requeridos -->
             <div class="w-full flex flex-col gap-3.5">
                 <button onclick="abrirCatalogo('detalle')" class="btn-interactivo btn-primario-custom w-full py-4 px-6 font-bold text-base sm:text-lg shadow-xl flex items-center justify-center gap-2.5 cursor-pointer">
                     <span id="ico-btn-detalle">🛍️</span>
@@ -203,7 +190,6 @@
                     <span>Precios al Mayoreo</span>
                 </button>
 
-                <!-- Accesos rápidos de Anfitrión si ya inició sesión -->
                 <div id="controles-admin-inicio" class="hidden flex-col gap-2 mt-3 pt-3 border-t border-white/10">
                     <button onclick="abrirPanelAnfitrion('productos')" class="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md">
                         <span>⚙️ Abrir Panel de Anfitrión</span>
@@ -215,7 +201,6 @@
             </div>
         </div>
 
-        <!-- Pie de página discreto con candado oculto para Anfitrión -->
         <footer class="w-full max-w-5xl flex items-center justify-between text-xs text-gray-400 pt-4 border-t border-white/10">
             <span>© <span id="anio-actual"></span> <strong id="footer-nombre-tienda" class="text-gray-200">Computer Cell</strong> · Pedidos directos vía WhatsApp</span>
             <button onclick="abrirAccesoAnfitrion()" title="Acceso Anfitrión" class="opacity-35 hover:opacity-100 transition p-2 rounded-lg text-gray-400 hover:text-purple-400 cursor-pointer" aria-label="Administración">
@@ -224,14 +209,10 @@
         </footer>
     </section>
 
-    <!-- =========================================================
-         VISTA DEL CATÁLOGO (DETALLE Y MAYOREO)
-    ========================================================== -->
+    <!-- ================= VISTA DEL CATÁLOGO ================= -->
     <section id="vista-catalogo" class="hidden min-h-screen flex-col pb-16">
-        <!-- Barra Superior Fija -->
         <header class="sticky top-0 z-30 backdrop-blur-md bg-[#110f1d]/90 border-b border-white/10 px-4 py-3">
             <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
-                <!-- Izquierda: Logo mini + Volver -->
                 <div class="flex items-center gap-2.5">
                     <button onclick="volverInicio()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-semibold flex items-center gap-1.5 cursor-pointer transition">
                         <span>⬅</span>
@@ -248,7 +229,6 @@
                     </div>
                 </div>
 
-                <!-- Derecha: Botón Morado Cotizar Reparación + Botón Panel Anfitrión (si está logueado) -->
                 <div class="flex items-center gap-2">
                     <button onclick="abrirModalReparacion()" class="btn-interactivo px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-white shadow-lg flex items-center gap-1.5 cursor-pointer" style="background: linear-gradient(135deg, #8E24AA, #5E35B1); border: 1px solid rgba(216, 180, 254, 0.35);">
                         <span id="ico-reparacion-bar">🛠️</span>
@@ -262,12 +242,9 @@
             </div>
         </header>
 
-        <!-- Contenido Principal del Catálogo -->
         <main class="max-w-6xl w-full mx-auto px-4 pt-5 flex-1">
-            <!-- Barra de Categorías (Incluye Teléfonos) -->
             <div id="barra-categorias" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-4"></div>
 
-            <!-- Buscador e Indicador de Resultados -->
             <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between mb-5">
                 <div class="relative flex-1">
                     <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">🔍</span>
@@ -281,10 +258,8 @@
                 </div>
             </div>
 
-            <!-- Cuadrícula de Productos -->
             <div id="grid-productos" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5 sm:gap-5"></div>
 
-            <!-- Botón de Paginación / Cargar Más (Soporta hasta 100,000 productos sin trabarse) -->
             <div id="contenedor-paginacion" class="mt-8 flex flex-col items-center gap-2 hidden">
                 <p id="texto-paginacion" class="text-xs text-gray-400"></p>
                 <button onclick="cargarMasProductos()" class="btn-interactivo px-6 py-3 rounded-xl font-bold text-sm text-white shadow-lg cursor-pointer" style="background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));">
@@ -294,19 +269,14 @@
         </main>
     </section>
 
-    <!-- =========================================================
-         MODAL: COTIZAR REPARACIÓN VÍA WHATSAPP
-    ========================================================== -->
+    <!-- Modales -->
     <div id="modal-reparacion" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-[#1a172c] border-2 border-purple-500 rounded-2xl max-w-md w-full p-6 text-white shadow-2xl">
             <div class="flex items-center justify-between mb-3">
-                <h3 class="text-lg font-bold flex items-center gap-2">
-                    <span>🛠️</span> Cotizar Reparación
-                </h3>
+                <h3 class="text-lg font-bold flex items-center gap-2"><span>🛠️</span> Cotizar Reparación</h3>
                 <button onclick="cerrarModal('modal-reparacion')" class="text-gray-400 hover:text-white text-xl font-bold cursor-pointer">✕</button>
             </div>
             <p class="text-xs text-gray-300 mb-4">Completa los datos de tu equipo y envía tu solicitud directamente a nuestro WhatsApp técnico.</p>
-
             <div class="space-y-3 text-left">
                 <div>
                     <label class="block text-xs font-semibold text-purple-300 mb-1">Tipo de Equipo</label>
@@ -319,32 +289,26 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-purple-300 mb-1">Marca y Modelo</label>
-                    <input type="text" id="rep-modelo" placeholder="Ej: iPhone 13 Pro, Samsung A54, HP Pavilion..." class="w-full p-3 rounded-xl bg-[#110f1d] border border-purple-500/40 text-sm text-white outline-none">
+                    <input type="text" id="rep-modelo" placeholder="Ej: iPhone 13 Pro, Samsung A54, HP..." class="w-full p-3 rounded-xl bg-[#110f1d] border border-purple-500/40 text-sm text-white outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-purple-300 mb-1">Falla o Reparación que necesitas</label>
-                    <textarea id="rep-falla" rows="3" placeholder="Ej: Cambio de pantalla, centro de carga, batería, mantenimiento..." class="w-full p-3 rounded-xl bg-[#110f1d] border border-purple-500/40 text-sm text-white outline-none resize-none"></textarea>
+                    <textarea id="rep-falla" rows="3" placeholder="Ej: Cambio de pantalla, centro de carga, batería..." class="w-full p-3 rounded-xl bg-[#110f1d] border border-purple-500/40 text-sm text-white outline-none resize-none"></textarea>
                 </div>
             </div>
-
             <div class="flex gap-3 mt-5">
                 <button onclick="cerrarModal('modal-reparacion')" class="flex-1 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-sm font-semibold cursor-pointer">Cancelar</button>
-                <button onclick="enviarCotizacionWhatsApp()" class="flex-1 py-3 rounded-xl bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-lg">
-                    <span>💬</span> Enviar a WhatsApp
-                </button>
+                <button onclick="enviarCotizacionWhatsApp()" class="flex-1 py-3 rounded-xl bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-lg"><span>💬</span> Enviar a WhatsApp</button>
             </div>
         </div>
     </div>
 
-    <!-- =========================================================
-         MODAL: ACCESO A PRECIOS AL MAYOREO (VALIDACIÓN TELEFÓNICA)
-    ========================================================== -->
     <div id="modal-mayorista" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-[#1a172c] border-2 border-purple-500 rounded-2xl max-w-sm w-full p-6 text-center text-white shadow-2xl">
             <div class="text-3xl mb-2">🔐</div>
             <h3 class="text-lg font-bold mb-1">Acceso Precios al Mayoreo</h3>
-            <p class="text-xs text-gray-300 mb-4">Ingresa tu número telefónico autorizado por el administrador para desbloquear la tarifa mayorista.</p>
-            <input type="tel" id="input-tel-mayorista" placeholder="Ej: 99998888 o +504 9999-8888" class="w-full p-3.5 rounded-xl bg-[#110f1d] border border-purple-500 text-center text-base font-semibold text-white outline-none mb-4">
+            <p class="text-xs text-gray-300 mb-4">Ingresa tu número telefónico autorizado por el administrador.</p>
+            <input type="tel" id="input-tel-mayorista" placeholder="Ej: 99998888" class="w-full p-3.5 rounded-xl bg-[#110f1d] border border-purple-500 text-center text-base font-semibold text-white outline-none mb-4">
             <div class="flex gap-3">
                 <button onclick="cerrarModal('modal-mayorista')" class="flex-1 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-sm font-semibold cursor-pointer">Cancelar</button>
                 <button onclick="verificarMayorista()" class="flex-1 py-3 rounded-xl btn-primario-custom text-sm font-bold cursor-pointer">Ingresar</button>
@@ -352,14 +316,11 @@
         </div>
     </div>
 
-    <!-- =========================================================
-         MODAL: ACCESO AL PANEL DE ANFITRIÓN (SOLO CORREOS AUTORIZADOS)
-    ========================================================== -->
     <div id="modal-login-admin" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden items-center justify-center p-4">
         <div class="bg-[#1a172c] border-2 border-purple-500 rounded-2xl max-w-sm w-full p-6 text-center text-white shadow-2xl">
             <div class="text-3xl mb-2">🛡️</div>
             <h3 class="text-lg font-bold mb-1">Panel de Anfitrión</h3>
-            <p class="text-xs text-gray-300 mb-4">Acceso exclusivo para administradores autorizados de Computer Cell.</p>
+            <p class="text-xs text-gray-300 mb-4">Acceso exclusivo para administradores autorizados.</p>
             <input type="email" id="login-admin-email" placeholder="Correo electrónico autorizado" class="w-full p-3 rounded-xl bg-[#110f1d] border border-purple-500/60 text-sm text-white outline-none mb-3 text-center">
             <input type="password" id="login-admin-pass" placeholder="Clave de acceso" class="w-full p-3 rounded-xl bg-[#110f1d] border border-purple-500/60 text-sm text-white outline-none mb-4 text-center">
             <div class="flex gap-3">
@@ -369,9 +330,6 @@
         </div>
     </div>
 
-    <!-- =========================================================
-         MODAL: ZOOM DE IMAGEN DE PRODUCTO
-    ========================================================== -->
     <div id="modal-zoom" onclick="cerrarModal('modal-zoom')" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[120] hidden items-center justify-center p-4">
         <div onclick="event.stopPropagation()" class="relative max-w-lg w-full bg-[#1a172c] border-2 border-purple-500 rounded-2xl p-3 shadow-2xl">
             <button onclick="cerrarModal('modal-zoom')" class="absolute -top-3 -right-3 w-9 h-9 rounded-full bg-red-600 text-white font-bold border-2 border-white shadow-lg cursor-pointer">✕</button>
@@ -381,28 +339,20 @@
                     <h4 id="zoom-titulo" class="font-bold text-white text-base"></h4>
                     <p id="zoom-precio" class="text-purple-300 font-extrabold text-lg"></p>
                 </div>
-                <a id="zoom-wsp-link" href="#" target="_blank" class="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#1ebe5d] text-white text-xs sm:text-sm font-bold flex items-center gap-1.5">
-                    <span>💬</span> Pedir por WhatsApp
-                </a>
+                <a id="zoom-wsp-link" href="#" target="_blank" class="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#1ebe5d] text-white text-xs sm:text-sm font-bold flex items-center gap-1.5"><span>💬</span> Pedir por WhatsApp</a>
             </div>
         </div>
     </div>
 
-    <!-- =========================================================
-         PANEL DE ANFITRIÓN COMPLETO (GESTIÓN EN TIEMPO REAL)
-    ========================================================== -->
+    <!-- PANEL DE ANFITRIÓN -->
     <div id="modal-panel-anfitrion" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[90] hidden items-center justify-center p-2 sm:p-4">
         <div class="bg-[#161326] border-2 border-purple-500/80 rounded-2xl max-w-4xl w-full max-h-[94vh] flex flex-col overflow-hidden shadow-2xl text-white">
-            <!-- Cabecera del Panel -->
             <div class="px-5 py-4 bg-[#1f1a36] border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
                 <div>
-                    <h2 class="text-base sm:text-lg font-extrabold flex items-center gap-2">
-                        <span>🛡️ Panel de Anfitrión — Computer Cell</span>
-                    </h2>
+                    <h2 class="text-base sm:text-lg font-extrabold flex items-center gap-2"><span>🛡️ Panel de Anfitrión — Computer Cell</span></h2>
                     <p id="admin-usuario-actual" class="text-xs text-purple-300"></p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <!-- Indicador de Capacidad 100,000 Productos -->
                     <div id="indicador-capacidad-productos" class="px-3 py-1.5 rounded-xl bg-purple-950/80 border border-purple-500/50 text-xs font-bold text-purple-200">
                         📦 Productos: <span id="conteo-productos-admin">0</span> / 100,000
                     </div>
@@ -410,38 +360,23 @@
                 </div>
             </div>
 
-            <!-- Pestañas de Navegación del Panel -->
             <div class="flex overflow-x-auto no-scrollbar bg-[#120f20] border-b border-white/10 px-3 pt-2 gap-1.5">
-                <button onclick="cambiarTabAdmin('productos')" id="tab-btn-productos" class="tab-admin-btn px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-purple-600 text-white cursor-pointer">
-                    📦 Catálogo y Teléfonos
-                </button>
-                <button onclick="cambiarTabAdmin('diseno')" id="tab-btn-diseno" class="tab-admin-btn px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-white/5 text-gray-300 hover:bg-white/10 cursor-pointer">
-                    🎨 Diseño, Logo e Íconos
-                </button>
-                <button onclick="cambiarTabAdmin('mayoristas')" id="tab-btn-mayoristas" class="tab-admin-btn px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-white/5 text-gray-300 hover:bg-white/10 cursor-pointer">
-                    📱 Clientes Mayoristas
-                </button>
-                <button onclick="cambiarTabAdmin('equipo')" id="tab-btn-equipo" class="tab-admin-btn px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-white/5 text-gray-300 hover:bg-white/10 cursor-pointer">
-                    👥 Equipo Administrador
-                </button>
+                <button onclick="cambiarTabAdmin('productos')" id="tab-btn-productos" class="tab-admin-btn px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-purple-600 text-white cursor-pointer">📦 Catálogo y Teléfonos</button>
+                <button onclick="cambiarTabAdmin('diseno')" id="tab-btn-diseno" class="tab-admin-btn px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-white/5 text-gray-300 hover:bg-white/10 cursor-pointer">🎨 Diseño, Logo e Íconos</button>
+                <button onclick="cambiarTabAdmin('mayoristas')" id="tab-btn-mayoristas" class="tab-admin-btn px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-white/5 text-gray-300 hover:bg-white/10 cursor-pointer">📱 Clientes Mayoristas</button>
+                <button onclick="cambiarTabAdmin('equipo')" id="tab-btn-equipo" class="tab-admin-btn px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-white/5 text-gray-300 hover:bg-white/10 cursor-pointer">👥 Equipo Administrador</button>
             </div>
 
-            <!-- Cuerpo del Panel con Scroll -->
             <div class="p-4 sm:p-6 overflow-y-auto flex-1 space-y-6">
-
-                <!-- =========================================
-                     PESTAÑA 1: PRODUCTOS (LÍMITE 100,000)
-                ========================================== -->
+                <!-- Pestaña Productos -->
                 <div id="tab-contenido-productos" class="space-y-5">
-                    <!-- Banner de alerta cuando se alcanza el límite de 100,000 -->
                     <div id="alerta-limite-productos" class="hidden p-4 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-amber-200 text-xs sm:text-sm font-semibold">
-                        ⚠️ <strong>Límite máximo alcanzado (100,000 / 100,000 productos):</strong> No se eliminarán tus productos guardados, pero debes eliminar al menos uno existente si deseas registrar un artículo nuevo.
+                        ⚠️ <strong>Límite máximo alcanzado (100,000 / 100,000 productos):</strong> Ningún producto existente será borrado, pero debes eliminar al menos uno para registrar uno nuevo.
                     </div>
 
-                    <!-- Formulario Agregar / Editar Producto -->
                     <div class="bg-[#1e1a33] border border-white/10 rounded-2xl p-4 sm:p-5">
                         <div class="flex items-center justify-between mb-3">
-                            <h3 id="form-prod-titulo" class="font-bold text-sm sm:text-base text-purple-300">➕ Agregar Nuevo Producto al Catálogo Global</h3>
+                            <h3 id="form-prod-titulo" class="font-bold text-sm sm:text-base text-purple-300">➕ Agregar Nuevo Producto</h3>
                             <button id="btn-cancelar-edicion" onclick="limpiarFormularioProducto()" class="hidden text-xs px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-gray-200 cursor-pointer">Cancelar edición</button>
                         </div>
 
@@ -449,7 +384,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs text-gray-300 mb-1">Nombre del producto *</label>
-                                <input type="text" id="form-prod-nombre" placeholder="Ej: iPhone 15 Pro Max 256GB" class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none focus:border-purple-500">
+                                <input type="text" id="form-prod-nombre" placeholder="Ej: iPhone 15 Pro Max" class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none focus:border-purple-500">
                             </div>
                             <div>
                                 <label class="block text-xs text-gray-300 mb-1">Etiqueta / Categoría *</label>
@@ -473,11 +408,11 @@
                                 <input type="text" id="form-prod-mayoreo" placeholder="Ej: L 16,900.00" class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none focus:border-purple-500">
                             </div>
                             <div>
-                                <label class="block text-xs text-gray-300 mb-1">Subir foto desde dispositivo (se comprime automático)</label>
+                                <label class="block text-xs text-gray-300 mb-1">Subir foto desde dispositivo</label>
                                 <input type="file" id="form-prod-archivo" accept="image/*" class="w-full p-2 rounded-xl bg-[#110f1d] border border-white/15 text-xs text-gray-300">
                             </div>
                             <div>
-                                <label class="block text-xs text-gray-300 mb-1">O pegar enlace (URL) de imagen</label>
+                                <label class="block text-xs text-gray-300 mb-1">O pegar URL de imagen</label>
                                 <input type="url" id="form-prod-url" placeholder="https://..." class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none focus:border-purple-500">
                             </div>
                         </div>
@@ -487,7 +422,6 @@
                         </button>
                     </div>
 
-                    <!-- Lista rápida de productos registrados para editar/eliminar -->
                     <div class="bg-[#1e1a33] border border-white/10 rounded-2xl p-4">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                             <h4 class="font-bold text-sm text-white">Inventario Publicado (<span id="admin-lista-conteo">0</span> / 100,000)</h4>
@@ -497,11 +431,8 @@
                     </div>
                 </div>
 
-                <!-- =========================================
-                     PESTAÑA 2: DISEÑO, LOGO E ÍCONOS
-                ========================================== -->
+                <!-- Pestaña Diseño -->
                 <div id="tab-contenido-diseno" class="hidden space-y-5">
-                    <!-- Sub-sección A: Editor de Logotipo -->
                     <div class="bg-[#1e1a33] border border-white/10 rounded-2xl p-4 sm:p-5">
                         <h3 class="font-bold text-sm sm:text-base text-purple-300 mb-3">🖼️ Editor de Logotipo Oficial (./logo.png)</h3>
                         <div class="flex flex-col sm:flex-row items-center gap-4">
@@ -511,11 +442,11 @@
                             <div class="flex-1 w-full space-y-2.5">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                     <div>
-                                        <label class="block text-xs text-gray-300 mb-1">Subir PNG/JPG del logo (sincroniza en la nube)</label>
+                                        <label class="block text-xs text-gray-300 mb-1">Subir PNG del logo</label>
                                         <input type="file" id="diseno-logo-archivo" accept="image/*" onchange="procesarLogoArchivo(this)" class="w-full p-2 rounded-xl bg-[#110f1d] border border-white/15 text-xs text-gray-300">
                                     </div>
                                     <div>
-                                        <label class="block text-xs text-gray-300 mb-1">Ruta o URL del logo (predeterminado: ./logo.png)</label>
+                                        <label class="block text-xs text-gray-300 mb-1">Ruta del logo (predeterminado: ./logo.png)</label>
                                         <input type="text" id="diseno-logo-url" placeholder="./logo.png" oninput="actualizarPreviewLogoUrl()" class="w-full p-2 rounded-xl bg-[#110f1d] border border-white/15 text-xs text-white outline-none">
                                     </div>
                                 </div>
@@ -525,220 +456,68 @@
                                         <input type="range" id="diseno-logo-tamano" min="90" max="280" value="175" oninput="actualizarTamanoLogoPreview(this.value)" class="w-full accent-purple-500">
                                     </div>
                                     <button onclick="restaurarLogoOriginal()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-purple-200 cursor-pointer">
-                                        ↺ Restaurar ./logo.png Original
+                                        ↺ Restaurar ./logo.png
                                     </button>
                                 </div>
-                                <p class="text-[11px] text-gray-400">
-                                    📁 Para Netlify: guarda tu imagen transparente como <code class="text-purple-300">logo.png</code> en la misma carpeta junto a <code class="text-purple-300">index.html</code>, o súbela arriba para sincronizarla al instante en todos los dispositivos.
-                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Sub-sección B: Estética, Colores, Tipografía y Bordes -->
                     <div class="bg-[#1e1a33] border border-white/10 rounded-2xl p-4 sm:p-5">
                         <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                            <h3 class="font-bold text-sm sm:text-base text-purple-300">🎨 Estética, Colores y Tipografía</h3>
+                            <h3 class="font-bold text-sm sm:text-base text-purple-300">🎨 Estética y Colores</h3>
                             <div class="flex gap-1.5">
                                 <button onclick="aplicarTemaRapido('original')" class="px-2.5 py-1 rounded-lg bg-purple-700/60 hover:bg-purple-600 text-[11px] font-semibold cursor-pointer">Morado Original</button>
                                 <button onclick="aplicarTemaRapido('oled')" class="px-2.5 py-1 rounded-lg bg-black border border-white/20 hover:border-purple-400 text-[11px] font-semibold cursor-pointer">Negro OLED</button>
-                                <button onclick="aplicarTemaRapido('cyber')" class="px-2.5 py-1 rounded-lg bg-indigo-900/70 hover:bg-indigo-700 text-[11px] font-semibold cursor-pointer">Cyber Violeta</button>
                             </div>
                         </div>
-
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                             <div>
                                 <label class="block text-xs text-gray-300 mb-1">Nombre de la Tienda</label>
                                 <input type="text" id="diseno-nombre-tienda" class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none">
                             </div>
                             <div>
-                                <label class="block text-xs text-gray-300 mb-1">WhatsApp Oficial (con código país, ej: 50495324898)</label>
+                                <label class="block text-xs text-gray-300 mb-1">WhatsApp Oficial</label>
                                 <input type="text" id="diseno-whatsapp" class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none">
                             </div>
-                            <div>
-                                <label class="block text-xs text-gray-300 mb-1">Fuente Tipográfica</label>
-                                <select id="diseno-fuente" class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none">
-                                    <option value="'Inter', sans-serif">Inter (Moderna y limpia)</option>
-                                    <option value="'Poppins', sans-serif">Poppins (Geométrica amigable)</option>
-                                    <option value="'Montserrat', sans-serif">Montserrat (Elegante y tech)</option>
-                                    <option value="'Roboto', sans-serif">Roboto (Clásica Android)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs text-gray-300 mb-1">Estilo de Bordes</label>
-                                <select id="diseno-bordes" class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none">
-                                    <option value="16px">Redondeado Moderno (16px)</option>
-                                    <option value="24px">Muy Redondeado (24px)</option>
-                                    <option value="8px">Sutil / Ejecutivo (8px)</option>
-                                    <option value="0px">Recto / Minimalista (0px)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                            <label class="flex items-center justify-between p-2.5 rounded-xl bg-[#110f1d] border border-white/10 text-xs">
-                                <span>Principal</span>
-                                <input type="color" id="color-primario" class="w-8 h-6 rounded cursor-pointer bg-transparent">
-                            </label>
-                            <label class="flex items-center justify-between p-2.5 rounded-xl bg-[#110f1d] border border-white/10 text-xs">
-                                <span>Secundario</span>
-                                <input type="color" id="color-secundario" class="w-8 h-6 rounded cursor-pointer bg-transparent">
-                            </label>
-                            <label class="flex items-center justify-between p-2.5 rounded-xl bg-[#110f1d] border border-white/10 text-xs">
-                                <span>Fondo</span>
-                                <input type="color" id="color-fondo" class="w-8 h-6 rounded cursor-pointer bg-transparent">
-                            </label>
-                            <label class="flex items-center justify-between p-2.5 rounded-xl bg-[#110f1d] border border-white/10 text-xs">
-                                <span>Tarjetas</span>
-                                <input type="color" id="color-tarjeta" class="w-8 h-6 rounded cursor-pointer bg-transparent">
-                            </label>
-                            <label class="flex items-center justify-between p-2.5 rounded-xl bg-[#110f1d] border border-white/10 text-xs">
-                                <span>Texto</span>
-                                <input type="color" id="color-texto" class="w-8 h-6 rounded cursor-pointer bg-transparent">
-                            </label>
-                            <label class="flex items-center justify-between p-2.5 rounded-xl bg-[#110f1d] border border-white/10 text-xs">
-                                <span>WhatsApp</span>
-                                <input type="color" id="color-whatsapp" class="w-8 h-6 rounded cursor-pointer bg-transparent">
-                            </label>
                         </div>
                     </div>
 
-                    <!-- Sub-sección C: Animaciones y Efectos -->
-                    <div class="bg-[#1e1a33] border border-white/10 rounded-2xl p-4 sm:p-5">
-                        <h3 class="font-bold text-sm sm:text-base text-purple-300 mb-3">✨ Animaciones y Efectos Visuales</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs text-gray-300 mb-1">Animación del Logotipo</label>
-                                <select id="anim-logo" class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none">
-                                    <option value="anim-logo-float">Flotar suavemente</option>
-                                    <option value="anim-logo-pulse">Pulso sutil</option>
-                                    <option value="anim-logo-glow">Resplandor morado</option>
-                                    <option value="anim-logo-bounce">Rebote suave</option>
-                                    <option value="none">Sin animación</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs text-gray-300 mb-1">Animación de Tarjetas</label>
-                                <select id="anim-cards" class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none">
-                                    <option value="anim-card-lift">Elevación al pasar cursor</option>
-                                    <option value="anim-card-glow">Borde luminoso morado</option>
-                                    <option value="anim-card-slide">Entrada deslizada</option>
-                                    <option value="none">Estático</option>
-                                </select>
-                            </div>
-                        </div>
-                        <label class="mt-3 flex items-center gap-2.5 text-xs text-gray-200 cursor-pointer">
-                            <input type="checkbox" id="efecto-fondo-tech" class="w-4 h-4 accent-purple-500 rounded">
-                            <span>Activar cuadrícula tecnológica sutil en el fondo</span>
-                        </label>
-                    </div>
-
-                    <!-- Sub-sección D: Gestor e Importador de Íconos -->
-                    <div class="bg-[#1e1a33] border border-white/10 rounded-2xl p-4 sm:p-5">
-                        <h3 class="font-bold text-sm sm:text-base text-purple-300 mb-1">🧩 Gestor e Importador de Íconos</h3>
-                        <p class="text-xs text-gray-400 mb-3">Personaliza cualquier ícono con emojis de librería, subiendo un archivo SVG/PNG o pegando código SVG.</p>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                            <div>
-                                <label class="block text-xs text-gray-300 mb-1">Elemento a personalizar</label>
-                                <select id="icono-destino" onchange="cargarIconoActualEnEditor()" class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none">
-                                    <option value="btnDetalle">Botón: Precios al Detalle</option>
-                                    <option value="btnMayoreo">Botón: Precios al Mayoreo</option>
-                                    <option value="btnReparacion">Botón: Cotizar Reparación</option>
-                                    <option value="btnWhatsApp">Botón: Pedir por WhatsApp</option>
-                                    <option value="catTelefonos">Categoría: Teléfonos</option>
-                                    <option value="catAccesorios">Categoría: Accesorios</option>
-                                    <option value="catCargadores">Categoría: Cargadores</option>
-                                    <option value="catAudio">Categoría: Audio</option>
-                                    <option value="catCables">Categoría: Cables</option>
-                                    <option value="catProteccion">Categoría: Protección</option>
-                                    <option value="catComputadoras">Categoría: Computadoras</option>
-                                    <option value="catRepuestos">Categoría: Repuestos</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs text-gray-300 mb-1">Librería rápida (haz clic para elegir)</label>
-                                <div class="flex flex-wrap gap-1.5 p-2 rounded-xl bg-[#110f1d] border border-white/15">
-                                    <button type="button" onclick="seleccionarEmojiIcono('📱')" class="p-1 hover:bg-white/10 rounded cursor-pointer">📱</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('📲')" class="p-1 hover:bg-white/10 rounded cursor-pointer">📲</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('🛍️')" class="p-1 hover:bg-white/10 rounded cursor-pointer">🛍️</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('🔐')" class="p-1 hover:bg-white/10 rounded cursor-pointer">🔐</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('🛠️')" class="p-1 hover:bg-white/10 rounded cursor-pointer">🛠️</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('💬')" class="p-1 hover:bg-white/10 rounded cursor-pointer">💬</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('🎧')" class="p-1 hover:bg-white/10 rounded cursor-pointer">🎧</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('🔌')" class="p-1 hover:bg-white/10 rounded cursor-pointer">🔌</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('💻')" class="p-1 hover:bg-white/10 rounded cursor-pointer">💻</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('⚡')" class="p-1 hover:bg-white/10 rounded cursor-pointer">⚡</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('🛡️')" class="p-1 hover:bg-white/10 rounded cursor-pointer">🛡️</button>
-                                    <button type="button" onclick="seleccionarEmojiIcono('⚙️')" class="p-1 hover:bg-white/10 rounded cursor-pointer">⚙️</button>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-xs text-gray-300 mb-1">Importar ícono desde archivo (PNG / SVG)</label>
-                                <input type="file" id="icono-archivo" accept="image/*" onchange="importarIconoArchivo(this)" class="w-full p-2 rounded-xl bg-[#110f1d] border border-white/15 text-xs text-gray-300">
-                            </div>
-                            <div>
-                                <label class="block text-xs text-gray-300 mb-1">O pegar código &lt;svg&gt; / Emoji / URL</label>
-                                <input type="text" id="icono-valor-texto" placeholder="Ej: 📱 o <svg>...</svg> o https://..." class="w-full p-2.5 rounded-xl bg-[#110f1d] border border-white/15 text-xs text-white outline-none">
-                            </div>
-                        </div>
-
-                        <button type="button" onclick="aplicarIconoPersonalizado()" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-bold text-white cursor-pointer">
-                            ✅ Aplicar Ícono a este Elemento
-                        </button>
-                    </div>
-
-                    <!-- Guardar toda la configuración visual en la nube -->
                     <button onclick="guardarConfiguracionVisualNube()" class="w-full py-3.5 rounded-xl btn-primario-custom font-bold text-sm shadow-xl cursor-pointer">
                         ☁️ Guardar y Sincronizar Diseño, Logo e Íconos en Todos los Dispositivos
                     </button>
                 </div>
 
-                <!-- =========================================
-                     PESTAÑA 3: CLIENTES MAYORISTAS AUTORIZADOS
-                ========================================== -->
+                <!-- Pestaña Mayoristas -->
                 <div id="tab-contenido-mayoristas" class="hidden space-y-4">
                     <div class="bg-[#1e1a33] border border-white/10 rounded-2xl p-4 sm:p-5">
                         <h3 class="font-bold text-sm sm:text-base text-purple-300 mb-1">📱 Números Autorizados para Precios al Mayoreo</h3>
-                        <p class="text-xs text-gray-400 mb-4">Solo los números telefónicos registrados en esta lista podrán entrar a ver los precios al mayoreo.</p>
-
+                        <p class="text-xs text-gray-400 mb-4">Solo los números aquí registrados podrán ver precios al mayoreo.</p>
                         <div class="flex gap-2 mb-4">
-                            <input type="tel" id="nuevo-numero-mayorista" placeholder="Ej: +504 9988-7766 o 99887766" class="flex-1 p-3 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none focus:border-purple-500">
-                            <button onclick="agregarNumeroMayorista()" class="px-5 py-3 rounded-xl btn-primario-custom font-bold text-xs sm:text-sm cursor-pointer">
-                                ➕ Autorizar
-                            </button>
+                            <input type="tel" id="nuevo-numero-mayorista" placeholder="Ej: 99887766" class="flex-1 p-3 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none focus:border-purple-500">
+                            <button onclick="agregarNumeroMayorista()" class="px-5 py-3 rounded-xl btn-primario-custom font-bold text-xs sm:text-sm cursor-pointer">➕ Autorizar</button>
                         </div>
-
                         <div id="lista-admin-mayoristas" class="space-y-2 max-h-64 overflow-y-auto"></div>
                     </div>
                 </div>
 
-                <!-- =========================================
-                     PESTAÑA 4: EQUIPO ADMINISTRADOR (CORREOS)
-                ========================================== -->
+                <!-- Pestaña Equipo -->
                 <div id="tab-contenido-equipo" class="hidden space-y-4">
                     <div class="bg-[#1e1a33] border border-white/10 rounded-2xl p-4 sm:p-5">
-                        <h3 class="font-bold text-sm sm:text-base text-purple-300 mb-1">👥 Correos con Acceso al Panel de Anfitrión</h3>
-                        <p class="text-xs text-gray-400 mb-4">Los administradores principales (<strong class="text-white">lisbethmeji2011@gmail.com</strong> y <strong class="text-white">zelayaeuceda@gmail.com</strong>) están protegidos. Aquí puedes agregar correos de colaboradores para apoyar en la actualización del catálogo.</p>
-
+                        <h3 class="font-bold text-sm sm:text-base text-purple-300 mb-1">👥 Correos Administradores</h3>
+                        <p class="text-xs text-gray-400 mb-4">Lisbeth y Zelaya son principales. Aquí puedes añadir colaboradores.</p>
                         <div class="flex gap-2 mb-4">
-                            <input type="email" id="nuevo-correo-admin" placeholder="correo.colaborador@gmail.com" class="flex-1 p-3 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none focus:border-purple-500">
-                            <button onclick="agregarCorreoAdmin()" class="px-5 py-3 rounded-xl btn-primario-custom font-bold text-xs sm:text-sm cursor-pointer">
-                                ➕ Agregar Correo
-                            </button>
+                            <input type="email" id="nuevo-correo-admin" placeholder="correo@gmail.com" class="flex-1 p-3 rounded-xl bg-[#110f1d] border border-white/15 text-sm text-white outline-none focus:border-purple-500">
+                            <button onclick="agregarCorreoAdmin()" class="px-5 py-3 rounded-xl btn-primario-custom font-bold text-xs sm:text-sm cursor-pointer">➕ Agregar Correo</button>
                         </div>
-
                         <div id="lista-admin-correos" class="space-y-2"></div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- =========================================================
-         SCRIPT PRINCIPAL: FIREBASE REAL-TIME + LÓGICA DE NEGOCIO
-    ========================================================== -->
+    <!-- SCRIPT FIREBASE Y LÓGICA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -750,13 +529,9 @@
             addDoc,
             updateDoc,
             deleteDoc,
-            onSnapshot,
-            getDocs
+            onSnapshot
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // ---------------------------------------------------------
-        // CONFIGURACIÓN DE FIREBASE (ENTORNO GLOBAL EN TIEMPO REAL)
-        // ---------------------------------------------------------
         const fallbackConfig = {
             apiKey: "AIzaSyBvLDDsuP0O9VUQWWgg5tVvifPndJZCPgw",
             authDomain: "computer-cell-catalogo-digital.firebaseapp.com",
@@ -779,13 +554,9 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Rutas públicas globales estrictas según reglas Firestore (/artifacts/{appId}/public/data/...)
         const colProductosRef = collection(db, 'artifacts', appId, 'public', 'data', 'productos');
         const docConfigRef = doc(db, 'artifacts', appId, 'public', 'data', 'configuracion', 'general');
 
-        // ---------------------------------------------------------
-        // CONSTANTES Y ESTADO DE LA APLICACIÓN
-        // ---------------------------------------------------------
         const LIMITE_MAXIMO_PRODUCTOS = 100000;
         const PRODUCTOS_POR_PAGINA = 24;
         const ADMINS_PRINCIPALES = ["lisbethmeji2011@gmail.com", "zelayaeuceda@gmail.com"];
@@ -803,14 +574,13 @@
             { nombre: "Repuestos", iconoKey: "catRepuestos", defaultIcono: "⚙️" }
         ];
 
-        // Ruta oficial del logotipo PNG transparente original proporcionado por el usuario
         const DEFAULT_LOGO_URL = "./logo.png";
         const FALLBACK_LOGO_FILENAME = "./WhatsApp_Image_2026-11-13_at_2.38.32_PM-removebg-preview (1).png";
 
         let estadoConfig = {
             nombreTienda: "Computer Cell",
             whatsapp: "50495324898",
-            logoTipo: "local_png", // 'local_png' | 'imagen'
+            logoTipo: "local_png",
             logoUrl: DEFAULT_LOGO_URL,
             logoTamano: 175,
             colorPrimario: "#7C4DFF",
@@ -844,68 +614,19 @@
 
         let productosGlobales = [];
         let categoriaSeleccionada = "Todos";
-        let modoTarifa = "detalle"; // 'detalle' | 'mayoreo'
+        let modoTarifa = "detalle";
         let cantidadVisible = PRODUCTOS_POR_PAGINA;
         let usuarioAdminLogueado = null;
         let contadorToquesLogo = 0;
         let timerToquesLogo = null;
         let firebaseListo = false;
 
-        // Productos iniciales por defecto (incluyendo la categoría Teléfonos)
         const PRODUCTOS_INICIALES_SEED = [
-            {
-                nombre: "iPhone 15 128GB Liberado",
-                categoria: "Teléfonos",
-                detalle: "L 21,500.00",
-                mayoreo: "L 19,800.00",
-                imagen: "https://placehold.co/400x400/241744/FFFFFF?text=iPhone+15",
-                creadoEn: Date.now() - 1000
-            },
-            {
-                nombre: "Samsung Galaxy A55 5G 256GB",
-                categoria: "Teléfonos",
-                detalle: "L 11,200.00",
-                mayoreo: "L 9,950.00",
-                imagen: "https://placehold.co/400x400/241744/FFFFFF?text=Samsung+A55",
-                creadoEn: Date.now() - 2000
-            },
-            {
-                nombre: "Xiaomi Redmi Note 13 Pro",
-                categoria: "Teléfonos",
-                detalle: "L 7,800.00",
-                mayoreo: "L 6,850.00",
-                imagen: "https://placehold.co/400x400/241744/FFFFFF?text=Redmi+Note+13",
-                creadoEn: Date.now() - 3000
-            },
-            {
-                nombre: "Cargador Rápido 35W USB-C",
-                categoria: "Cargadores",
-                detalle: "L 450.00",
-                mayoreo: "L 290.00",
-                imagen: "https://placehold.co/400x400/241744/FFFFFF?text=Cargador+35W",
-                creadoEn: Date.now() - 4000
-            },
-            {
-                nombre: "Audífonos Inalámbricos Pro",
-                categoria: "Audio",
-                detalle: "L 690.00",
-                mayoreo: "L 460.00",
-                imagen: "https://placehold.co/400x400/241744/FFFFFF?text=Audifonos+Pro",
-                creadoEn: Date.now() - 5000
-            },
-            {
-                nombre: "Vidrio Templado Cerámico Full",
-                categoria: "Protección",
-                detalle: "L 180.00",
-                mayoreo: "L 85.00",
-                imagen: "https://placehold.co/400x400/241744/FFFFFF?text=Vidrio+Templado",
-                creadoEn: Date.now() - 6000
-            }
+            { nombre: "iPhone 15 128GB Liberado", categoria: "Teléfonos", detalle: "L 21,500.00", mayoreo: "L 19,800.00", imagen: "https://placehold.co/400x400/241744/FFFFFF?text=iPhone+15", creadoEn: Date.now() - 1000 },
+            { nombre: "Samsung Galaxy A55 5G 256GB", categoria: "Teléfonos", detalle: "L 11,200.00", mayoreo: "L 9,950.00", imagen: "https://placehold.co/400x400/241744/FFFFFF?text=Samsung+A55", creadoEn: Date.now() - 2000 },
+            { nombre: "Cargador Rápido 35W USB-C", categoria: "Cargadores", detalle: "L 450.00", mayoreo: "L 290.00", imagen: "https://placehold.co/400x400/241744/FFFFFF?text=Cargador+35W", creadoEn: Date.now() - 3000 }
         ];
 
-        // ---------------------------------------------------------
-        // RENDERIZADO DE LOGOTIPO OFICIAL (./logo.png), ESTÉTICA E ÍCONOS
-        // ---------------------------------------------------------
         window.manejarErrorLogo = function(imgEl) {
             const intento = Number(imgEl.dataset.intento || "0");
             if (intento === 0) {
@@ -915,40 +636,24 @@
             }
             if (intento === 1) {
                 imgEl.dataset.intento = "2";
-                const logoLocalCache = localStorage.getItem('cc_logo_png_cache');
-                if (logoLocalCache) {
-                    imgEl.src = logoLocalCache;
+                const cache = localStorage.getItem('cc_logo_png_cache');
+                if (cache) {
+                    imgEl.src = cache;
                     return;
                 }
-            }
-            // Si aún no se ha colocado logo.png en la carpeta, mostrar guía discreta sin generar logos falsos
-            const contenedor = imgEl.parentElement;
-            if (contenedor) {
-                contenedor.innerHTML = `
-                    <div class="px-4 py-3 rounded-xl bg-purple-950/70 border border-purple-400/40 text-center max-w-xs">
-                        <p class="text-sm font-extrabold text-white tracking-wide">COMPUTER CELL</p>
-                        <p class="text-[11px] text-purple-200 mt-1">Coloca tu archivo <code class="bg-black/40 px-1 rounded">logo.png</code> junto a <code class="bg-black/40 px-1 rounded">index.html</code> o súbelo en el Panel de Anfitrión.</p>
-                    </div>
-                `;
             }
         };
 
         function obtenerHtmlLogo(tamanoPx) {
-            const fuenteLogo = (estadoConfig.logoUrl && estadoConfig.logoTipo !== 'svg_original')
-                ? estadoConfig.logoUrl
-                : DEFAULT_LOGO_URL;
+            const fuenteLogo = (estadoConfig.logoUrl && estadoConfig.logoTipo !== 'svg_original') ? estadoConfig.logoUrl : DEFAULT_LOGO_URL;
             return `<img src="${fuenteLogo}" alt="${estadoConfig.nombreTienda}" data-intento="0" onerror="manejarErrorLogo(this)" style="width:${tamanoPx}px; max-width:100%; height:auto; object-fit:contain; display:block;">`;
         }
 
         function renderizarIcono(valor) {
             if (!valor) return "✨";
             const limpio = valor.trim();
-            if (limpio.startsWith("<svg")) {
-                return `<span class="inline-flex items-center justify-center w-5 h-5 [&>svg]:w-full [&>svg]:h-full">${limpio}</span>`;
-            }
-            if (limpio.startsWith("http://") || limpio.startsWith("https://") || limpio.startsWith("data:image")) {
-                return `<img src="${limpio}" alt="icono" class="w-5 h-5 object-contain inline-block rounded">`;
-            }
+            if (limpio.startsWith("<svg")) return `<span class="inline-flex items-center justify-center w-5 h-5 [&>svg]:w-full [&>svg]:h-full">${limpio}</span>`;
+            if (limpio.startsWith("http://") || limpio.startsWith("https://") || limpio.startsWith("data:image")) return `<img src="${limpio}" alt="icono" class="w-5 h-5 object-contain inline-block rounded">`;
             return `<span>${limpio}</span>`;
         }
 
@@ -963,49 +668,33 @@
             r.setProperty('--fuente-app', estadoConfig.fuente || "'Inter', sans-serif");
             r.setProperty('--radio-borde', estadoConfig.radioBorde || '16px');
 
-            document.title = `${estadoConfig.nombreTienda} - Catálogo en Tiempo Real`;
+            document.title = `${estadoConfig.nombreTienda} - Catálogo Digital`;
             document.getElementById('titulo-bienvenida').textContent = estadoConfig.nombreTienda;
             document.getElementById('header-nombre-tienda').textContent = estadoConfig.nombreTienda;
             document.getElementById('footer-nombre-tienda').textContent = estadoConfig.nombreTienda;
 
-            // Fondo tecnológico
-            if (estadoConfig.fondoTech) {
-                document.body.classList.add('fondo-tech');
-            } else {
-                document.body.classList.remove('fondo-tech');
-            }
+            if (estadoConfig.fondoTech) document.body.classList.add('fondo-tech');
+            else document.body.classList.remove('fondo-tech');
 
-            // Clases de animación de tarjetas
             document.body.classList.remove('anim-card-lift', 'anim-card-glow', 'anim-card-slide');
-            if (estadoConfig.animCards && estadoConfig.animCards !== 'none') {
-                document.body.classList.add(estadoConfig.animCards);
-            }
+            if (estadoConfig.animCards && estadoConfig.animCards !== 'none') document.body.classList.add(estadoConfig.animCards);
 
-            // Renderizar Logo en Bienvenida y Cabecera
             const logoInicio = document.getElementById('render-logo-inicio');
             logoInicio.className = `flex items-center justify-center ${estadoConfig.animLogo !== 'none' ? estadoConfig.animLogo : ''}`;
             logoInicio.innerHTML = obtenerHtmlLogo(estadoConfig.logoTamano || 165);
 
-            const logoHeader = document.getElementById('render-logo-header');
-            logoHeader.innerHTML = obtenerHtmlLogo(34);
-
-            // Actualizar Íconos en botones principales
-            const ic = estadoConfig.iconos;
-            document.getElementById('ico-btn-detalle').innerHTML = renderizarIcono(ic.btnDetalle);
-            document.getElementById('ico-btn-mayoreo').innerHTML = renderizarIcono(ic.btnMayoreo);
-            document.getElementById('ico-reparacion-inicio').innerHTML = renderizarIcono(ic.btnReparacion);
-            document.getElementById('ico-reparacion-bar').innerHTML = renderizarIcono(ic.btnReparacion);
+            document.getElementById('render-logo-header').innerHTML = obtenerHtmlLogo(34);
+            document.getElementById('ico-btn-detalle').innerHTML = renderizarIcono(estadoConfig.iconos.btnDetalle);
+            document.getElementById('ico-btn-mayoreo').innerHTML = renderizarIcono(estadoConfig.iconos.btnMayoreo);
+            document.getElementById('ico-reparacion-inicio').innerHTML = renderizarIcono(estadoConfig.iconos.btnReparacion);
+            document.getElementById('ico-reparacion-bar').innerHTML = renderizarIcono(estadoConfig.iconos.btnReparacion);
         }
 
-        // ---------------------------------------------------------
-        // NAVEGACIÓN: BIENVENIDA, CATÁLOGO DETALLE Y MAYOREO
-        // ---------------------------------------------------------
         window.abrirCatalogo = function(modo) {
             modoTarifa = modo;
             categoriaSeleccionada = "Todos";
             cantidadVisible = PRODUCTOS_POR_PAGINA;
             document.getElementById('input-buscar').value = "";
-
             const badge = document.getElementById('badge-modo-catalogo');
             if (modo === 'mayoreo') {
                 badge.textContent = "⭐ Precios al Mayoreo";
@@ -1014,11 +703,9 @@
                 badge.textContent = "Precios al Detalle";
                 badge.className = "inline-block text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-600 text-white";
             }
-
             document.getElementById('pantalla-inicio').classList.add('hidden');
             document.getElementById('vista-catalogo').classList.remove('hidden');
             document.getElementById('vista-catalogo').classList.add('flex');
-
             renderizarCategorias();
             renderizarCatalogo();
         };
@@ -1039,41 +726,28 @@
             const raw = document.getElementById('input-tel-mayorista').value.trim();
             const soloDigitos = raw.replace(/\D/g, '');
             if (!soloDigitos) {
-                mostrarToast("Por favor ingresa tu número de teléfono.", "warning");
+                mostrarToast("Ingresa tu número telefónico.", "warning");
                 return;
             }
-
             const autorizado = estadoConfig.mayoristas.some(num => {
-                const limpioGuardado = String(num).replace(/\D/g, '');
-                return limpioGuardado === soloDigitos ||
-                       limpioGuardado.endsWith(soloDigitos) ||
-                       soloDigitos.endsWith(limpioGuardado);
+                const limpio = String(num).replace(/\D/g, '');
+                return limpio === soloDigitos || limpio.endsWith(soloDigitos) || soloDigitos.endsWith(limpio);
             });
-
             if (autorizado) {
                 cerrarModal('modal-mayorista');
                 mostrarToast("¡Acceso mayorista concedido!", "success");
                 abrirCatalogo('mayoreo');
             } else {
-                mostrarAviso(
-                    "Número No Autorizado",
-                    "Tu número telefónico no se encuentra en la lista de clientes mayoristas. Contacta al administrador de Computer Cell para solicitar tu registro."
-                );
+                mostrarAviso("Número No Autorizado", "Tu número no está registrado como cliente mayorista.");
             }
         };
 
-        // ---------------------------------------------------------
-        // RENDERIZADO DE CATEGORÍAS Y CATÁLOGO CON PAGINACIÓN
-        // ---------------------------------------------------------
         function renderizarCategorias() {
             const contenedor = document.getElementById('barra-categorias');
             contenedor.innerHTML = CATEGORIAS_LISTA.map(cat => {
                 const activa = cat.nombre === categoriaSeleccionada;
                 const iconoVal = cat.iconoKey ? (estadoConfig.iconos[cat.iconoKey] || cat.defaultIcono) : cat.defaultIcono;
-                const clases = activa
-                    ? "btn-primario-custom text-white shadow-md scale-[1.02]"
-                    : "bg-[#1a172c] text-gray-300 border border-white/10 hover:border-purple-500/60";
-
+                const clases = activa ? "btn-primario-custom text-white shadow-md scale-[1.02]" : "bg-[#1a172c] text-gray-300 border border-white/10 hover:border-purple-500/60";
                 return `
                     <button onclick="seleccionarCategoria('${cat.nombre}')" class="px-4 py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap flex items-center gap-1.5 transition cursor-pointer ${clases}">
                         ${renderizarIcono(iconoVal)}
@@ -1104,9 +778,7 @@
             const termino = document.getElementById('input-buscar').value.trim().toLowerCase();
             return productosGlobales.filter(p => {
                 const coincideCat = (categoriaSeleccionada === "Todos") || (p.categoria === categoriaSeleccionada);
-                const coincideTexto = !termino ||
-                    (p.nombre && p.nombre.toLowerCase().includes(termino)) ||
-                    (p.categoria && p.categoria.toLowerCase().includes(termino));
+                const coincideTexto = !termino || (p.nombre && p.nombre.toLowerCase().includes(termino)) || (p.categoria && p.categoria.toLowerCase().includes(termino));
                 return coincideCat && coincideTexto;
             });
         }
@@ -1116,16 +788,14 @@
             const totalFiltrados = filtrados.length;
             const visibles = filtrados.slice(0, cantidadVisible);
 
-            document.getElementById('contador-resultados').textContent =
-                `${totalFiltrados.toLocaleString('es-HN')} producto${totalFiltrados === 1 ? '' : 's'}`;
-
+            document.getElementById('contador-resultados').textContent = `${totalFiltrados.toLocaleString('es-HN')} producto${totalFiltrados === 1 ? '' : 's'}`;
             const grid = document.getElementById('grid-productos');
+
             if (visibles.length === 0) {
                 grid.innerHTML = `
                     <div class="col-span-full py-16 text-center bg-white/[0.02] rounded-2xl border border-white/10">
                         <div class="text-4xl mb-2">🔍</div>
-                        <p class="text-gray-300 font-semibold">No se encontraron productos en esta búsqueda.</p>
-                        <p class="text-xs text-gray-400 mt-1">Prueba seleccionando otra categoría o limpiando el buscador.</p>
+                        <p class="text-gray-300 font-semibold">No se encontraron productos.</p>
                     </div>
                 `;
                 document.getElementById('contenedor-paginacion').classList.add('hidden');
@@ -1138,9 +808,7 @@
             grid.innerHTML = visibles.map(prod => {
                 const precio = modoTarifa === 'mayoreo' ? prod.mayoreo : prod.detalle;
                 const etiquetaModo = modoTarifa === 'mayoreo' ? 'Mayoreo' : 'Detalle';
-                const mensaje = encodeURIComponent(
-                    `Hola ${estadoConfig.nombreTienda}, estoy interesado/a en realizar un pedido:\n• Producto: *${prod.nombre}*\n• Categoría: ${prod.categoria}\n• Modalidad: *${etiquetaModo}*\n• Precio: *${precio}*\n¿Tienen disponibilidad?`
-                );
+                const mensaje = encodeURIComponent(`Hola ${estadoConfig.nombreTienda}, me interesa pedir:\n• Producto: *${prod.nombre}*\n• Modalidad: *${etiquetaModo}*\n• Precio: *${precio}*`);
                 const linkWsp = `https://wa.me/${wspNumero}?text=${mensaje}`;
 
                 const controlesAdminTarjeta = usuarioAdminLogueado ? `
@@ -1152,21 +820,16 @@
 
                 return `
                     <article class="card-producto relative overflow-hidden flex flex-col justify-between shadow-lg">
-                        <span class="absolute top-2 left-2 z-10 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#110f1d]/85 backdrop-blur-sm text-purple-200 border border-purple-500/40">
-                            ${prod.categoria || 'Accesorios'}
-                        </span>
+                        <span class="absolute top-2 left-2 z-10 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#110f1d]/85 backdrop-blur-sm text-purple-200 border border-purple-500/40">${prod.categoria || 'Accesorios'}</span>
                         ${controlesAdminTarjeta}
-
                         <div onclick="abrirZoomProducto('${prod.id}')" class="aspect-square w-full bg-black/30 overflow-hidden cursor-pointer group">
                             <img src="${prod.imagen}" alt="${prod.nombre}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/400x400/241744/FFFFFF?text=Computer+Cell'">
                         </div>
-
                         <div class="p-3.5 flex flex-col gap-2 flex-1 justify-between">
                             <div>
-                                <h3 class="font-bold text-xs sm:text-sm line-clamp-2 leading-snug mb-1" title="${prod.nombre}">${prod.nombre}</h3>
+                                <h3 class="font-bold text-xs sm:text-sm line-clamp-2 leading-snug mb-1">${prod.nombre}</h3>
                                 <p class="text-base sm:text-lg font-extrabold text-purple-300">${precio}</p>
                             </div>
-
                             <a href="${linkWsp}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-custom w-full py-2.5 px-3 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 shadow-md transition">
                                 ${iconoWspHtml}
                                 <span>Pedir por WhatsApp</span>
@@ -1176,12 +839,10 @@
                 `;
             }).join('');
 
-            // Paginación progresiva
             const pagDiv = document.getElementById('contenedor-paginacion');
             if (totalFiltrados > visibles.length) {
                 pagDiv.classList.remove('hidden');
-                document.getElementById('texto-paginacion').textContent =
-                    `Mostrando ${visibles.length.toLocaleString('es-HN')} de ${totalFiltrados.toLocaleString('es-HN')} productos`;
+                document.getElementById('texto-paginacion').textContent = `Mostrando ${visibles.length} de ${totalFiltrados} productos`;
             } else {
                 pagDiv.classList.add('hidden');
             }
@@ -1191,22 +852,15 @@
             const prod = productosGlobales.find(p => p.id === id);
             if (!prod) return;
             const precio = modoTarifa === 'mayoreo' ? prod.mayoreo : prod.detalle;
-            const etiquetaModo = modoTarifa === 'mayoreo' ? 'Mayoreo' : 'Detalle';
             const wspNumero = String(estadoConfig.whatsapp || "50495324898").replace(/\D/g, '');
-            const mensaje = encodeURIComponent(
-                `Hola ${estadoConfig.nombreTienda}, me interesa pedir:\n• Producto: *${prod.nombre}*\n• Precio (${etiquetaModo}): *${precio}*`
-            );
-
+            const mensaje = encodeURIComponent(`Hola ${estadoConfig.nombreTienda}, me interesa:\n• ${prod.nombre}\n• Precio: ${precio}`);
             document.getElementById('zoom-imagen').src = prod.imagen;
             document.getElementById('zoom-titulo').textContent = prod.nombre;
-            document.getElementById('zoom-precio').textContent = `${precio} (${etiquetaModo})`;
+            document.getElementById('zoom-precio').textContent = precio;
             document.getElementById('zoom-wsp-link').href = `https://wa.me/${wspNumero}?text=${mensaje}`;
             abrirModal('modal-zoom');
         };
 
-        // ---------------------------------------------------------
-        // COTIZACIÓN DE REPARACIÓN VÍA WHATSAPP
-        // ---------------------------------------------------------
         window.abrirModalReparacion = function() {
             document.getElementById('rep-modelo').value = "";
             document.getElementById('rep-falla').value = "";
@@ -1217,28 +871,20 @@
             const equipo = document.getElementById('rep-equipo').value;
             const modelo = document.getElementById('rep-modelo').value.trim();
             const falla = document.getElementById('rep-falla').value.trim();
-
             if (!modelo || !falla) {
-                mostrarToast("Escribe el modelo y la falla para cotizar.", "warning");
+                mostrarToast("Escribe modelo y falla.", "warning");
                 return;
             }
-
             const wspNumero = String(estadoConfig.whatsapp || "50495324898").replace(/\D/g, '');
-            const texto = encodeURIComponent(
-                `Hola *${estadoConfig.nombreTienda}*, quisiera cotizar una reparación:\n• Equipo: *${equipo}*\n• Marca/Modelo: *${modelo}*\n• Problema/Servicio: *${falla}*`
-            );
+            const texto = encodeURIComponent(`Hola *${estadoConfig.nombreTienda}*, quiero cotizar reparación:\n• Equipo: ${equipo}\n• Modelo: ${modelo}\n• Falla: ${falla}`);
             window.open(`https://wa.me/${wspNumero}?text=${texto}`, '_blank', 'noopener,noreferrer');
             cerrarModal('modal-reparacion');
         };
 
-        // ---------------------------------------------------------
-        // PANEL DE ANFITRIÓN OCULTO Y AUTENTICACIÓN DE CORREOS
-        // ---------------------------------------------------------
         window.detectarToqueSecreto = function() {
             contadorToquesLogo++;
             clearTimeout(timerToquesLogo);
             timerToquesLogo = setTimeout(() => { contadorToquesLogo = 0; }, 1600);
-
             if (contadorToquesLogo >= 5) {
                 contadorToquesLogo = 0;
                 abrirAccesoAnfitrion();
@@ -1253,26 +899,21 @@
             document.getElementById('login-admin-email').value = "";
             document.getElementById('login-admin-pass').value = "";
             abrirModal('modal-login-admin');
-            setTimeout(() => document.getElementById('login-admin-email').focus(), 100);
         };
 
         window.verificarLoginAdmin = function() {
             const correo = document.getElementById('login-admin-email').value.trim().toLowerCase();
             const clave = document.getElementById('login-admin-pass').value;
-
-            const todosLosAdmins = [
-                ...ADMINS_PRINCIPALES,
-                ...(estadoConfig.adminsExtra || []).map(c => c.toLowerCase())
-            ];
+            const todosLosAdmins = [...ADMINS_PRINCIPALES, ...(estadoConfig.adminsExtra || []).map(c => c.toLowerCase())];
 
             if (todosLosAdmins.includes(correo) && clave === CLAVE_ANFITRION) {
                 usuarioAdminLogueado = correo;
                 cerrarModal('modal-login-admin');
                 actualizarUIModoAdmin(true);
-                mostrarToast(`Bienvenida/o al Panel de Anfitrión (${correo})`, "success");
+                mostrarToast(`Bienvenida/o (${correo})`, "success");
                 abrirPanelAnfitrion('productos');
             } else {
-                mostrarAviso("Acceso Denegado", "El correo no está autorizado o la clave de anfitrión es incorrecta.");
+                mostrarAviso("Acceso Denegado", "Correo no autorizado o clave incorrecta.");
             }
         };
 
@@ -1281,14 +922,13 @@
             actualizarUIModoAdmin(false);
             cerrarModal('modal-panel-anfitrion');
             renderizarCatalogo();
-            mostrarToast("Sesión de anfitrión cerrada.", "info");
+            mostrarToast("Sesión cerrada.", "info");
         };
 
         function actualizarUIModoAdmin(activo) {
             const badgeInicio = document.getElementById('badge-admin-inicio');
             const ctrlInicio = document.getElementById('controles-admin-inicio');
             const btnCatalogo = document.getElementById('btn-abrir-panel-catalogo');
-
             if (activo) {
                 badgeInicio.classList.remove('hidden');
                 ctrlInicio.classList.remove('hidden');
@@ -1306,7 +946,7 @@
 
         window.abrirPanelAnfitrion = function(tabInicial = 'productos') {
             if (!usuarioAdminLogueado) return;
-            document.getElementById('admin-usuario-actual').textContent = `Sesión iniciada como: ${usuarioAdminLogueado}`;
+            document.getElementById('admin-usuario-actual').textContent = `Sesión: ${usuarioAdminLogueado}`;
             actualizarContadoresCapacidad();
             cargarValoresFormularioDiseno();
             renderizarListaAdminProductos();
@@ -1330,30 +970,22 @@
             });
         };
 
-        // ---------------------------------------------------------
-        // GESTIÓN DE 100,000 PRODUCTOS SIN ELIMINACIÓN AUTOMÁTICA
-        // ---------------------------------------------------------
         function actualizarContadoresCapacidad() {
             const total = productosGlobales.length;
-            const formateado = total.toLocaleString('es-HN');
-
-            const elConteo = document.getElementById('conteo-productos-admin');
-            const elListaConteo = document.getElementById('admin-lista-conteo');
+            document.getElementById('conteo-productos-admin').textContent = total.toLocaleString('es-HN');
+            document.getElementById('admin-lista-conteo').textContent = total.toLocaleString('es-HN');
             const alertaLimite = document.getElementById('alerta-limite-productos');
             const btnGuardar = document.getElementById('btn-guardar-producto');
             const editId = document.getElementById('edit-prod-id').value;
 
-            if (elConteo) elConteo.textContent = formateado;
-            if (elListaConteo) elListaConteo.textContent = formateado;
-
             if (total >= LIMITE_MAXIMO_PRODUCTOS) {
-                if (alertaLimite) alertaLimite.classList.remove('hidden');
+                alertaLimite.classList.remove('hidden');
                 if (btnGuardar && !editId) {
                     btnGuardar.disabled = true;
                     btnGuardar.classList.add('opacity-50', 'cursor-not-allowed');
                 }
             } else {
-                if (alertaLimite) alertaLimite.classList.add('hidden');
+                alertaLimite.classList.add('hidden');
                 if (btnGuardar) {
                     btnGuardar.disabled = false;
                     btnGuardar.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -1368,21 +1000,14 @@
                     const img = new Image();
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        let w = img.width;
-                        let h = img.height;
+                        let w = img.width, h = img.height;
                         if (w > maxDimension || h > maxDimension) {
-                            if (w > h) {
-                                h = Math.round((h * maxDimension) / w);
-                                w = maxDimension;
-                            } else {
-                                w = Math.round((w * maxDimension) / h);
-                                h = maxDimension;
-                            }
+                            if (w > h) { h = Math.round((h * maxDimension) / w); w = maxDimension; }
+                            else { w = Math.round((w * maxDimension) / h); h = maxDimension; }
                         }
                         canvas.width = w;
                         canvas.height = h;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, w, h);
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                         resolve(canvas.toDataURL('image/jpeg', calidad));
                     };
                     img.onerror = reject;
@@ -1395,13 +1020,8 @@
 
         window.guardarProducto = async function() {
             const editId = document.getElementById('edit-prod-id').value;
-
-            // VALIDACIÓN CRÍTICA DE LÍMITE DE 100,000 PRODUCTOS SIN ELIMINAR EXISTENTES
             if (!editId && productosGlobales.length >= LIMITE_MAXIMO_PRODUCTOS) {
-                mostrarAviso(
-                    "Límite de 100,000 Productos Alcanzado",
-                    "Has alcanzado la capacidad máxima permitida de 100,000 productos en el catálogo. Ningún producto existente será eliminado automáticamente; para agregar uno nuevo, primero debes eliminar alguno de la lista."
-                );
+                mostrarAviso("Límite de 100,000 alcanzado", "Debes eliminar algún producto existente para agregar otro.");
                 return;
             }
 
@@ -1413,54 +1033,44 @@
             const archivoInput = document.getElementById('form-prod-archivo');
 
             if (!nombre || !detalle || !mayoreo) {
-                mostrarToast("Completa el nombre, precio al detalle y precio al mayoreo.", "warning");
+                mostrarToast("Completa los campos obligatorios.", "warning");
                 return;
             }
 
             const btn = document.getElementById('btn-guardar-producto');
-            const textoOriginal = btn.textContent;
             btn.disabled = true;
-            btn.textContent = "⏳ Sincronizando en la nube...";
+            btn.textContent = "⏳ Sincronizando...";
 
             try {
-                let imagenFinal = `https://placehold.co/400x400/241744/FFFFFF?text=${encodeURIComponent(nombre.slice(0, 18))}`;
-
+                let imagenFinal = `https://placehold.co/400x400/241744/FFFFFF?text=${encodeURIComponent(nombre.slice(0, 15))}`;
                 if (editId) {
                     const existente = productosGlobales.find(p => p.id === editId);
                     if (existente && existente.imagen) imagenFinal = existente.imagen;
                 }
-
                 if (archivoInput.files && archivoInput.files[0]) {
                     imagenFinal = await comprimirImagenArchivo(archivoInput.files[0]);
                 } else if (urlManual) {
                     imagenFinal = urlManual;
                 }
 
-                const datos = {
-                    nombre,
-                    categoria,
-                    detalle,
-                    mayoreo,
-                    imagen: imagenFinal,
-                    actualizadoEn: Date.now()
-                };
+                const datos = { nombre, categoria, detalle, mayoreo, imagen: imagenFinal, actualizadoEn: Date.now() };
 
                 if (editId) {
                     await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'productos', editId), datos);
-                    mostrarToast("Producto actualizado en todos los dispositivos.", "success");
+                    mostrarToast("Producto actualizado en la nube.", "success");
                 } else {
                     datos.creadoEn = Date.now();
                     await addDoc(colProductosRef, datos);
-                    mostrarToast("Producto publicado en tiempo real para todos los visitantes.", "success");
+                    mostrarToast("Producto agregado en tiempo real.", "success");
                 }
-
                 limpiarFormularioProducto();
-            } catch (error) {
-                console.error("Error guardando producto:", error);
-                mostrarAviso("Error de Sincronización", "No se pudo guardar el producto en la nube. Verifica tu conexión a internet.");
+                renderizarListaAdminProductos();
+            } catch (e) {
+                console.error(e);
+                mostrarAviso("Permiso Denegado", "Las reglas de Firebase Firestore impiden modificar o eliminar datos (verifica que las reglas permitan escritura para usuarios autenticados).");
             } finally {
                 btn.disabled = false;
-                btn.textContent = textoOriginal;
+                btn.textContent = "💾 Guardar y Publicar en Todos los Dispositivos";
                 actualizarContadoresCapacidad();
             }
         };
@@ -1473,7 +1083,6 @@
         window.cargarProductoEnFormulario = function(id) {
             const prod = productosGlobales.find(p => p.id === id);
             if (!prod) return;
-
             document.getElementById('edit-prod-id').value = prod.id;
             document.getElementById('form-prod-titulo').textContent = `✏️ Editando: ${prod.nombre}`;
             document.getElementById('form-prod-nombre').value = prod.nombre;
@@ -1481,17 +1090,13 @@
             document.getElementById('form-prod-detalle').value = prod.detalle;
             document.getElementById('form-prod-mayoreo').value = prod.mayoreo;
             document.getElementById('form-prod-url').value = prod.imagen.startsWith('http') ? prod.imagen : "";
-            document.getElementById('form-prod-archivo').value = "";
             document.getElementById('btn-cancelar-edicion').classList.remove('hidden');
-            document.getElementById('btn-guardar-producto').disabled = false;
-            document.getElementById('btn-guardar-producto').classList.remove('opacity-50', 'cursor-not-allowed');
         };
 
         window.limpiarFormularioProducto = function() {
             document.getElementById('edit-prod-id').value = "";
-            document.getElementById('form-prod-titulo').textContent = "➕ Agregar Nuevo Producto al Catálogo Global";
+            document.getElementById('form-prod-titulo').textContent = "➕ Agregar Nuevo Producto";
             document.getElementById('form-prod-nombre').value = "";
-            document.getElementById('form-prod-categoria').value = "Teléfonos";
             document.getElementById('form-prod-detalle').value = "";
             document.getElementById('form-prod-mayoreo').value = "";
             document.getElementById('form-prod-url').value = "";
@@ -1502,16 +1107,17 @@
 
         window.solicitarEliminarProducto = function(id, nombre) {
             document.getElementById('confirmar-titulo').textContent = "¿Eliminar producto?";
-            document.getElementById('confirmar-mensaje').textContent = `Se eliminará "${nombre}" del catálogo en todos los dispositivos.`;
+            document.getElementById('confirmar-mensaje').textContent = `Se eliminará "${nombre}" de todos los dispositivos.`;
             const btnSi = document.getElementById('btn-confirmar-si');
             btnSi.onclick = async () => {
                 cerrarModal('modal-confirmar');
                 try {
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'productos', id));
-                    mostrarToast("Producto eliminado correctamente.", "info");
+                    mostrarToast("Producto eliminado.", "info");
+                    renderizarListaAdminProductos();
                 } catch (e) {
                     console.error(e);
-                    mostrarToast("Error al eliminar el producto.", "warning");
+                    mostrarAviso("Permiso Denegado", "No se pudo eliminar en Firestore. Verifica que las reglas de tu base de datos permitan 'allow write: if request.auth != null;'.");
                 }
             };
             abrirModal('modal-confirmar');
@@ -1521,13 +1127,10 @@
             const contenedor = document.getElementById('lista-admin-productos');
             if (!contenedor) return;
             const filtro = (document.getElementById('admin-buscar-prod')?.value || "").trim().toLowerCase();
-
-            const filtrados = productosGlobales
-                .filter(p => !filtro || p.nombre.toLowerCase().includes(filtro) || (p.categoria || "").toLowerCase().includes(filtro))
-                .slice(0, 60); // Renderizamos hasta 60 coincidencias rápidas en el modal para fluidez extrema
+            const filtrados = productosGlobales.filter(p => !filtro || p.nombre.toLowerCase().includes(filtro)).slice(0, 50);
 
             if (filtrados.length === 0) {
-                contenedor.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">No hay productos que coincidan.</p>`;
+                contenedor.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">No hay productos.</p>`;
                 return;
             }
 
@@ -1537,110 +1140,52 @@
                         <img src="${p.imagen}" alt="" class="w-10 h-10 rounded-lg object-cover bg-black/40 shrink-0">
                         <div class="min-w-0">
                             <p class="text-xs font-bold text-white truncate">${p.nombre}</p>
-                            <p class="text-[11px] text-purple-300">${p.categoria} · Detalle: ${p.detalle} · Mayoreo: ${p.mayoreo}</p>
+                            <p class="text-[11px] text-purple-300">${p.categoria} · Det: ${p.detalle} · May: ${p.mayoreo}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 shrink-0">
-                        <button onclick="cargarProductoEnFormulario('${p.id}')" class="px-2.5 py-1.5 rounded-lg bg-purple-600/80 hover:bg-purple-500 text-xs font-semibold cursor-pointer">Editar</button>
-                        <button onclick="solicitarEliminarProducto('${p.id}', '${escaparComillas(p.nombre)}')" class="px-2.5 py-1.5 rounded-lg bg-red-600/80 hover:bg-red-500 text-xs font-semibold cursor-pointer">✕</button>
+                        <button onclick="cargarProductoEnFormulario('${p.id}')" class="px-2.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-xs font-semibold cursor-pointer">Editar</button>
+                        <button onclick="solicitarEliminarProducto('${p.id}', '${escaparComillas(p.nombre)}')" class="px-2.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-xs font-semibold cursor-pointer">✕</button>
                     </div>
                 </div>
             `).join('');
         };
 
-        // ---------------------------------------------------------
-        // MÓDULO DISEÑO, LOGO E ÍCONOS EN EL PANEL DE ANFITRIÓN
-        // ---------------------------------------------------------
         let borradorDiseno = null;
-
         function cargarValoresFormularioDiseno() {
             borradorDiseno = JSON.parse(JSON.stringify(estadoConfig));
-            if (!borradorDiseno.logoUrl || borradorDiseno.logoTipo === 'svg_original') {
-                borradorDiseno.logoTipo = 'local_png';
-                borradorDiseno.logoUrl = DEFAULT_LOGO_URL;
-            }
-            document.getElementById('diseno-logo-url').value = borradorDiseno.logoUrl;
+            document.getElementById('diseno-logo-url').value = borradorDiseno.logoUrl || DEFAULT_LOGO_URL;
             document.getElementById('diseno-logo-tamano').value = borradorDiseno.logoTamano || 175;
             document.getElementById('valor-tamano-logo').textContent = borradorDiseno.logoTamano || 175;
             actualizarPreviewLogoAdmin();
-
             document.getElementById('diseno-nombre-tienda').value = borradorDiseno.nombreTienda || "Computer Cell";
             document.getElementById('diseno-whatsapp').value = borradorDiseno.whatsapp || "50495324898";
-            document.getElementById('diseno-fuente').value = borradorDiseno.fuente || "'Inter', sans-serif";
-            document.getElementById('diseno-bordes').value = borradorDiseno.radioBorde || "16px";
-
-            document.getElementById('color-primario').value = borradorDiseno.colorPrimario || "#7C4DFF";
-            document.getElementById('color-secundario').value = borradorDiseno.colorSecundario || "#4527A0";
-            document.getElementById('color-fondo').value = borradorDiseno.colorFondo || "#110f1d";
-            document.getElementById('color-tarjeta').value = borradorDiseno.colorTarjeta || "#1a172c";
-            document.getElementById('color-texto').value = borradorDiseno.colorTexto || "#FFFFFF";
-            document.getElementById('color-whatsapp').value = borradorDiseno.colorWhatsapp || "#25D366";
-
-            document.getElementById('anim-logo').value = borradorDiseno.animLogo || "anim-logo-float";
-            document.getElementById('anim-cards').value = borradorDiseno.animCards || "anim-card-lift";
-            document.getElementById('efecto-fondo-tech').checked = !!borradorDiseno.fondoTech;
-
-            cargarIconoActualEnEditor();
         }
 
         function actualizarPreviewLogoAdmin() {
             const box = document.getElementById('preview-logo-admin');
             if (!box || !borradorDiseno) return;
-            const srcPreview = borradorDiseno.logoUrl || DEFAULT_LOGO_URL;
-            box.innerHTML = `<img src="${srcPreview}" alt="Logo Computer Cell" data-intento="0" onerror="manejarErrorLogo(this)" class="max-h-24 w-auto object-contain">`;
+            box.innerHTML = `<img src="${borradorDiseno.logoUrl || DEFAULT_LOGO_URL}" alt="Logo" onerror="manejarErrorLogo(this)" class="max-h-24 w-auto object-contain">`;
         }
 
         window.procesarLogoArchivo = async function(input) {
             if (!input.files || !input.files[0]) return;
             try {
-                // Preservar transparencia PNG al subir el logotipo
-                const dataUrl = await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            const maxDim = 520;
-                            let w = img.width;
-                            let h = img.height;
-                            if (w > maxDim || h > maxDim) {
-                                if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
-                                else { w = Math.round((w * maxDim) / h); h = maxDim; }
-                            }
-                            const canvas = document.createElement('canvas');
-                            canvas.width = w;
-                            canvas.height = h;
-                            const ctx = canvas.getContext('2d');
-                            ctx.clearRect(0, 0, w, h);
-                            ctx.drawImage(img, 0, 0, w, h);
-                            resolve(canvas.toDataURL('image/png'));
-                        };
-                        img.onerror = reject;
-                        img.src = e.target.result;
-                    };
-                    reader.onerror = reject;
-                    reader.readAsDataURL(input.files[0]);
-                });
-
+                const dataUrl = await comprimirImagenArchivo(input.files[0], 520, 0.9);
                 borradorDiseno.logoTipo = 'imagen';
                 borradorDiseno.logoUrl = dataUrl;
                 localStorage.setItem('cc_logo_png_cache', dataUrl);
-                document.getElementById('diseno-logo-url').value = "Imagen PNG cargada desde dispositivo";
+                document.getElementById('diseno-logo-url').value = "Imagen PNG cargada";
                 actualizarPreviewLogoAdmin();
-                mostrarToast("Tu logo PNG transparente se cargó. Presiona 'Guardar y Sincronizar' para publicarlo en todos los dispositivos.", "success");
+                mostrarToast("Logo PNG cargado. Guarda los cambios.", "success");
             } catch (e) {
-                mostrarToast("No se pudo procesar el archivo PNG del logo.", "warning");
+                mostrarToast("Error procesando imagen.", "warning");
             }
         };
 
         window.actualizarPreviewLogoUrl = function() {
             const url = document.getElementById('diseno-logo-url').value.trim();
-            if (url && url !== "Imagen PNG cargada desde dispositivo") {
-                borradorDiseno.logoTipo = 'imagen';
-                borradorDiseno.logoUrl = url;
-            } else if (!url) {
-                borradorDiseno.logoTipo = 'local_png';
-                borradorDiseno.logoUrl = DEFAULT_LOGO_URL;
-            }
+            if (url) borradorDiseno.logoUrl = url;
             actualizarPreviewLogoAdmin();
         };
 
@@ -1654,54 +1199,13 @@
             borradorDiseno.logoUrl = DEFAULT_LOGO_URL;
             borradorDiseno.logoTamano = 175;
             document.getElementById('diseno-logo-url').value = DEFAULT_LOGO_URL;
-            document.getElementById('diseno-logo-archivo').value = "";
-            document.getElementById('diseno-logo-tamano').value = 175;
-            document.getElementById('valor-tamano-logo').textContent = "175";
             actualizarPreviewLogoAdmin();
-            mostrarToast("Restaurado al archivo oficial ./logo.png. Guarda para sincronizar.", "info");
         };
 
         window.aplicarTemaRapido = function(tema) {
-            const temas = {
-                original: { primario: "#7C4DFF", secundario: "#4527A0", fondo: "#110f1d", tarjeta: "#1a172c", texto: "#FFFFFF" },
-                oled:     { primario: "#9333EA", secundario: "#581C87", fondo: "#050507", tarjeta: "#111116", texto: "#FFFFFF" },
-                cyber:    { primario: "#6366F1", secundario: "#312E81", fondo: "#0c0e1d", tarjeta: "#161933", texto: "#F8FAFC" }
-            };
-            const t = temas[tema];
-            if (!t) return;
-            document.getElementById('color-primario').value = t.primario;
-            document.getElementById('color-secundario').value = t.secundario;
-            document.getElementById('color-fondo').value = t.fondo;
-            document.getElementById('color-tarjeta').value = t.tarjeta;
-            document.getElementById('color-texto').value = t.texto;
-        };
-
-        window.cargarIconoActualEnEditor = function() {
-            const destino = document.getElementById('icono-destino').value;
-            document.getElementById('icono-valor-texto').value = (borradorDiseno?.iconos?.[destino]) || "";
-            document.getElementById('icono-archivo').value = "";
-        };
-
-        window.seleccionarEmojiIcono = function(emoji) {
-            document.getElementById('icono-valor-texto').value = emoji;
-        };
-
-        window.importarIconoArchivo = async function(input) {
-            if (!input.files || !input.files[0]) return;
-            const dataUrl = await comprimirImagenArchivo(input.files[0], 96, 0.85);
-            document.getElementById('icono-valor-texto').value = dataUrl;
-            mostrarToast("Ícono importado. Presiona 'Aplicar Ícono'.", "info");
-        };
-
-        window.aplicarIconoPersonalizado = function() {
-            const destino = document.getElementById('icono-destino').value;
-            const valor = document.getElementById('icono-valor-texto').value.trim();
-            if (!valor) {
-                mostrarToast("Ingresa un emoji, código SVG o importa un archivo.", "warning");
-                return;
+            if (tema === 'oled') {
+                document.getElementById('diseno-nombre-tienda').value = "Computer Cell";
             }
-            borradorDiseno.iconos[destino] = valor;
-            mostrarToast("Ícono aplicado al borrador. Guarda los cambios para sincronizar.", "success");
         };
 
         window.guardarConfiguracionVisualNube = async function() {
@@ -1709,50 +1213,29 @@
                 ...estadoConfig,
                 nombreTienda: document.getElementById('diseno-nombre-tienda').value.trim() || "Computer Cell",
                 whatsapp: document.getElementById('diseno-whatsapp').value.trim() || "50495324898",
-                logoTipo: borradorDiseno.logoTipo,
                 logoUrl: borradorDiseno.logoUrl,
-                logoTamano: Number(document.getElementById('diseno-logo-tamano').value) || 165,
-                fuente: document.getElementById('diseno-fuente').value,
-                radioBorde: document.getElementById('diseno-bordes').value,
-                colorPrimario: document.getElementById('color-primario').value,
-                colorSecundario: document.getElementById('color-secundario').value,
-                colorFondo: document.getElementById('color-fondo').value,
-                colorTarjeta: document.getElementById('color-tarjeta').value,
-                colorTexto: document.getElementById('color-texto').value,
-                colorWhatsapp: document.getElementById('color-whatsapp').value,
-                animLogo: document.getElementById('anim-logo').value,
-                animCards: document.getElementById('anim-cards').value,
-                fondoTech: document.getElementById('efecto-fondo-tech').checked,
-                iconos: borradorDiseno.iconos
+                logoTamano: Number(document.getElementById('diseno-logo-tamano').value) || 175
             };
-
             try {
                 await setDoc(docConfigRef, nuevaConfig);
                 estadoConfig = nuevaConfig;
                 aplicarConfiguracionVisual();
                 renderizarCategorias();
                 renderizarCatalogo();
-                mostrarToast("¡Diseño, logo e íconos sincronizados en todos los dispositivos!", "success");
+                mostrarToast("¡Diseño y logo sincronizados!", "success");
             } catch (e) {
                 console.error(e);
-                mostrarToast("Error al guardar la configuración en la nube.", "warning");
+                mostrarToast("Error guardando en la nube.", "warning");
             }
         };
 
-        // ---------------------------------------------------------
-        // GESTIÓN DE CLIENTES MAYORISTAS Y EQUIPO ADMINISTRADOR
-        // ---------------------------------------------------------
         function renderizarListaMayoristas() {
             const box = document.getElementById('lista-admin-mayoristas');
             if (!box) return;
-            if (estadoConfig.mayoristas.length === 0) {
-                box.innerHTML = `<p class="text-xs text-gray-400 text-center py-3">Aún no hay teléfonos mayoristas registrados.</p>`;
-                return;
-            }
             box.innerHTML = estadoConfig.mayoristas.map((tel, idx) => `
-                <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#110f1d] border border-white/10 text-xs sm:text-sm">
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#110f1d] border border-white/10 text-xs">
                     <span class="font-semibold text-white">📱 ${tel}</span>
-                    <button onclick="eliminarNumeroMayorista(${idx})" class="px-2.5 py-1 rounded-lg bg-red-600/80 hover:bg-red-500 text-white text-xs font-bold cursor-pointer">Quitar</button>
+                    <button onclick="eliminarNumeroMayorista(${idx})" class="px-2.5 py-1 rounded-lg bg-red-600 text-white font-bold cursor-pointer">Quitar</button>
                 </div>
             `).join('');
         }
@@ -1761,57 +1244,39 @@
             const input = document.getElementById('nuevo-numero-mayorista');
             const tel = input.value.trim();
             if (!tel) return;
-            if (estadoConfig.mayoristas.includes(tel)) {
-                mostrarToast("Ese número ya está autorizado.", "warning");
-                return;
-            }
             const actualizada = [...estadoConfig.mayoristas, tel];
             await setDoc(docConfigRef, { ...estadoConfig, mayoristas: actualizada });
             input.value = "";
-            mostrarToast("Número mayorista agregado y sincronizado.", "success");
+            mostrarToast("Número mayorista agregado.", "success");
         };
 
         window.eliminarNumeroMayorista = async function(idx) {
             const actualizada = estadoConfig.mayoristas.filter((_, i) => i !== idx);
             await setDoc(docConfigRef, { ...estadoConfig, mayoristas: actualizada });
-            mostrarToast("Número eliminado de la lista mayorista.", "info");
+            mostrarToast("Número eliminado.", "info");
         };
 
         function renderizarListaCorreosAdmin() {
             const box = document.getElementById('lista-admin-correos');
             if (!box) return;
-            const principalesHtml = ADMINS_PRINCIPALES.map(correo => `
-                <div class="flex items-center justify-between p-2.5 rounded-xl bg-purple-950/50 border border-purple-500/40 text-xs sm:text-sm">
-                    <span class="font-semibold text-purple-200">👑 ${correo}</span>
-                    <span class="text-[11px] px-2 py-0.5 rounded bg-purple-600 text-white font-bold">Principal</span>
+            const principales = ADMINS_PRINCIPALES.map(c => `<div class="p-2.5 rounded-xl bg-purple-950/50 border border-purple-500/40 text-xs font-semibold text-purple-200">👑 Principal: ${c}</div>`).join('');
+            const extras = (estadoConfig.adminsExtra || []).map((c, i) => `
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#110f1d] border border-white/10 text-xs">
+                    <span class="text-white">✉️ ${c}</span>
+                    <button onclick="eliminarCorreoAdmin(${i})" class="px-2.5 py-1 rounded-lg bg-red-600 text-white font-bold cursor-pointer">Quitar</button>
                 </div>
             `).join('');
-
-            const extrasHtml = (estadoConfig.adminsExtra || []).map((correo, idx) => `
-                <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#110f1d] border border-white/10 text-xs sm:text-sm">
-                    <span class="font-semibold text-white">✉️ ${correo}</span>
-                    <button onclick="eliminarCorreoAdmin(${idx})" class="px-2.5 py-1 rounded-lg bg-red-600/80 hover:bg-red-500 text-white text-xs font-bold cursor-pointer">Quitar</button>
-                </div>
-            `).join('');
-
-            box.innerHTML = principalesHtml + extrasHtml;
+            box.innerHTML = principales + extras;
         }
 
         window.agregarCorreoAdmin = async function() {
             const input = document.getElementById('nuevo-correo-admin');
             const correo = input.value.trim().toLowerCase();
-            if (!correo || !correo.includes('@')) {
-                mostrarToast("Ingresa un correo electrónico válido.", "warning");
-                return;
-            }
-            if (ADMINS_PRINCIPALES.includes(correo) || (estadoConfig.adminsExtra || []).includes(correo)) {
-                mostrarToast("Ese correo ya tiene permisos de administrador.", "warning");
-                return;
-            }
+            if (!correo) return;
             const nuevosExtras = [...(estadoConfig.adminsExtra || []), correo];
             await setDoc(docConfigRef, { ...estadoConfig, adminsExtra: nuevosExtras });
             input.value = "";
-            mostrarToast("Colaborador agregado al equipo administrador.", "success");
+            mostrarToast("Colaborador agregado.", "success");
         };
 
         window.eliminarCorreoAdmin = async function(idx) {
@@ -1820,24 +1285,8 @@
             mostrarToast("Colaborador removido.", "info");
         };
 
-        // ---------------------------------------------------------
-        // UTILIDADES DE UI (MODALES, TOASTS, SEGURIDAD HTML)
-        // ---------------------------------------------------------
-        window.abrirModal = function(id) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.classList.remove('hidden');
-                el.classList.add('flex');
-            }
-        };
-
-        window.cerrarModal = function(id) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.classList.add('hidden');
-                el.classList.remove('flex');
-            }
-        };
+        window.abrirModal = function(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); };
+        window.cerrarModal = function(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); };
 
         function mostrarAviso(titulo, mensaje) {
             document.getElementById('aviso-titulo').textContent = titulo;
@@ -1847,28 +1296,18 @@
 
         function mostrarToast(mensaje, tipo = 'info') {
             const container = document.getElementById('toast-container');
-            const colores = {
-                success: 'bg-emerald-600 border-emerald-400 text-white',
-                warning: 'bg-amber-600 border-amber-400 text-white',
-                info: 'bg-[#252042] border-purple-500 text-white'
-            };
+            const colores = { success: 'bg-emerald-600 text-white', warning: 'bg-amber-600 text-white', info: 'bg-[#252042] text-white' };
             const div = document.createElement('div');
-            div.className = `pointer-events-auto px-4 py-3 rounded-xl border shadow-2xl text-xs sm:text-sm font-semibold transition-all duration-300 ${colores[tipo] || colores.info}`;
+            div.className = `pointer-events-auto px-4 py-3 rounded-xl border border-purple-500 shadow-2xl text-xs sm:text-sm font-semibold transition-all duration-300 ${colores[tipo] || colores.info}`;
             div.textContent = mensaje;
             container.appendChild(div);
-            setTimeout(() => {
-                div.style.opacity = '0';
-                setTimeout(() => div.remove(), 300);
-            }, 3400);
+            setTimeout(() => { div.style.opacity = '0'; setTimeout(() => div.remove(), 300); }, 3400);
         }
 
         function escaparComillas(str) {
             return String(str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
         }
 
-        // ---------------------------------------------------------
-        // INICIALIZACIÓN Y SINCRONIZACIÓN EN TIEMPO REAL (FIRESTORE)
-        // ---------------------------------------------------------
         async function iniciarConexionNube() {
             document.getElementById('anio-actual').textContent = new Date().getFullYear();
             aplicarConfiguracionVisual();
@@ -1880,32 +1319,18 @@
                     await signInAnonymously(auth);
                 }
 
-                // Escuchar configuración general en tiempo real
                 onSnapshot(docConfigRef, async (snap) => {
                     if (snap.exists()) {
                         const data = snap.data();
-                        estadoConfig = {
-                            ...estadoConfig,
-                            ...data,
-                            iconos: { ...estadoConfig.iconos, ...(data.iconos || {}) },
-                            mayoristas: Array.isArray(data.mayoristas) ? data.mayoristas : estadoConfig.mayoristas,
-                            adminsExtra: Array.isArray(data.adminsExtra) ? data.adminsExtra : []
-                        };
+                        estadoConfig = { ...estadoConfig, ...data, iconos: { ...estadoConfig.iconos, ...(data.iconos || {}) }, mayoristas: data.mayoristas || estadoConfig.mayoristas, adminsExtra: data.adminsExtra || [] };
                     } else {
                         await setDoc(docConfigRef, estadoConfig);
                     }
                     aplicarConfiguracionVisual();
                     renderizarCategorias();
                     renderizarCatalogo();
-                    if (usuarioAdminLogueado) {
-                        renderizarListaMayoristas();
-                        renderizarListaCorreosAdmin();
-                    }
-                }, (error) => {
-                    console.warn("Aviso en escucha de configuración:", error);
                 });
 
-                // Escuchar catálogo de productos en tiempo real
                 onSnapshot(colProductosRef, async (snapshot) => {
                     if (snapshot.empty && !firebaseListo) {
                         firebaseListo = true;
@@ -1915,31 +1340,22 @@
                         return;
                     }
                     firebaseListo = true;
-
                     const lista = [];
-                    snapshot.forEach((docSnap) => {
-                        lista.push({ id: docSnap.id, ...docSnap.data() });
-                    });
+                    snapshot.forEach(docSnap => lista.push({ id: docSnap.id, ...docSnap.data() }));
                     lista.sort((a, b) => (b.creadoEn || 0) - (a.creadoEn || 0));
                     productosGlobales = lista;
-
                     renderizarCatalogo();
                     actualizarContadoresCapacidad();
-                    if (usuarioAdminLogueado) {
-                        renderizarListaAdminProductos();
-                    }
-                }, (error) => {
-                    console.warn("Aviso en escucha de productos:", error);
-                    document.getElementById('texto-sync-inicio').textContent = "Modo local activo";
+                    if (usuarioAdminLogueado) renderizarListaAdminProductos();
                 });
             } catch (err) {
-                console.error("Error inicializando conexión:", err);
+                console.error("Error nube:", err);
                 productosGlobales = PRODUCTOS_INICIALES_SEED.map((p, idx) => ({ id: `local-${idx}`, ...p }));
                 renderizarCatalogo();
-                document.getElementById('texto-sync-inicio').textContent = "Sin conexión a nube";
+                document.getElementById('texto-sync-inicio').textContent = "Modo local";
             }
         }
-        
+
         iniciarConexionNube();
     </script>
 </body>
